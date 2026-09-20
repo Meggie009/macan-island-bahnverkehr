@@ -1,0 +1,16 @@
+ID	Fracht_Bezeichnung	Passende_Waggons_Primär	Passende_Waggons_Alternativ	Start_Gleis	Ziel_Gleis	Betriebliche_Hinweise_und_Reinigung
+F1	Frischefisch	Frost-Festung	Kalter Rausch	Port Varan Nord	Kalanga Fishworks Nord	Kühlung bevorzugt. Bei Nutzung von 'Kalter Rausch' zeitnah entladen. Nach Transport ggf. gründliche Ausspülung erforderlich.
+F2	Fischkonserven	Alpen-Kasten	Gedeckte Tonne	Kalanga Fishworks Süd	Port Varan Nord	Konserven in Öl. Endbühne des Alpen-Kasten bietet Platz für Begleitpersonal der {GANG}.
+F3	Fischabfälle	Niederbord kurz	Kisten Kasten	Kalanga Fishworks Süd	Port Varan Süd	Unkomplizierter Abtransport. Bei Nutzung gedeckter Wagen ist vor Folgebeladung mit Speisegütern eine Grundreinigung nötig.
+F4	Kokosnüsse (Frisch)	Kisten Kasten	Gedeckte Tonne	Port Varan Süd	Baraki Palms	Rohware von Kalanga Palms. 'Kisten Kasten' hat ideale Deckenhöhe für lose Schüttung.
+F5	Kokosöl (Speiseöl)	Kessel	SHELL	Baraki Palms	Kalanga Fishworks Nord	Speiseöl für Konserven. Bei Nutzung des SHELL-Wagens muss dieser vorher gründlich von Kraftstoffresten gereinigt worden sein.
+F6	Kopra-Kuchen	Gedeckte Tonne	Kisten Kasten	Baraki Palms	Port Varan Nord	Trockenes Nebenprodukt der Ölpresse für den Export oder Tauschgeschäfte.
+F7	Nussfasern & Holz	Niederbord kurz	Kisten Kasten	Baraki Palms	Baraki Palms	Interner Verschub vom Lager zu den Öfen.
+F8	Roh-Chemikalien & Methanol	Kessel-VTG	Kessel	Port Varan Nord	Oshira Stollen Küche	Grundstoffe für das Labor von {KOCH}. Kessel-VTG ist korrosionsbeständig.
+F9	Kristallines Meth (Reinstware)	Gedeckte Tonne	Alpen-Kasten	Oshira Stollen Küche	Port Varan Nord	In Kisten verpackte Ware. Verladung unter Aufsicht der {GANG}.
+F10	Labor-Abwasser	Kessel-VTG	Kessel	Oshira Stollen Küche	Port Varan Süd	Rückstände aus der Kochung. Vor Nutzung für Speiseöle ist zwingend eine chemische Dekontamination nötig.
+F11	Treibstoff (Benzin/Diesel)	SHELL	Kessel	Port Varan Nord	Baraki Palms	Treibstoff für Generatoren.
+F12	Treibstoff (Bunker-Diesel)	SHELL	Kessel	Port Varan Nord	Oshira Stollen Abstellung	Versorgung der Bunkerelektrik und der Kleinlok.
+F13	Reinigungsmittel & Säure	Kessel-VTG	SHELL	Port Varan Nord	Kalanga Fishworks Nord	Desinfektions- und Reinigungsmittel für die Fischhallen und Waggon-Grundreinigungen.
+F14	Wachgruppe / Verstärkung	Personenwagen	Alpen-Kasten	Port Varan Süd	Oshira Stollen Küche	Verlegung von Personal der {GANG} bei Sicherheitsbedarf. Alternativ-Waggon Alpen-Kasten: Mitfahrt auf der Endbühne.
+F15	Arbeiter / Nusssammler	Personenwagen	Keiner	Port Varan Süd	Baraki Palms	Schichtwechsel der Einheimischen ({BEWOHNER}) bzw.  {NUSSSAMMLER} unter Kontrolle der {GANG}.

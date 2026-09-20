@@ -1,0 +1,9 @@
+Kampagne	Kapitel	Kapitel_Titel	Fracht_ID	Start_Gleis	Ziel_Gleis	Auftrag_Details
+1. Das Kokos-Kartell	1.1	Rohstoff-Anlieferung	F4	Port Varan Süd	Baraki Palms	Liefere Kokosnüsse im Waggon 'Kisten Kasten' nach Baraki Palms zu {KOOPERATIVE_CHEF}.
+1. Das Kokos-Kartell	1.2	Öl-Transfer	F5	Baraki Palms	Kalanga Fishworks Nord	Bringe das gepresste Kokosöl im Waggon 'Kessel' nach Kalanga Fishworks Nord. (Sollte der SHELL-Waggon genutzt werden, ist vorher eine Spülung einzubauen).
+1. Das Kokos-Kartell	1.3	Fischkonserven-Export	F2	Kalanga Fishworks Süd	Port Varan Nord	Bringe die fertigen Fischkonserven im Waggon 'Alpen-Kasten' nach Port Varan Nord. Die {GANG} reist auf der Endbühne mit.
+2. Labor von {KOCH}	2.1	Gefahrgut-Import	F8	Port Varan Nord	Oshira Stollen Küche	Befördere Roh-Chemikalien & Methanol im 'Kessel-VTG' zum Stollenlabor von {KOCH}.
+2. Labor von {KOCH}	2.2	Wach-Verstärkung	F14	Port Varan Süd	Oshira Stollen Küche	Bring frisches Personal der {GANG} im Personenwagen (Pwg) zur Absicherung des Stollens.
+2. Labor von {KOCH}	2.3	Drogen-Export	F9	Oshira Stollen Küche	Port Varan Nord	Schmuggle das kristalline Meth getarnt im 'Gedeckte Tonne' zum Schiffsanleger Port Varan Nord.
+3. Widerstand auf Macan	3.1	Not-Energie	F11	Port Varan Nord	Baraki Palms	Nach Störungen der Solaranlage muss Treibstoff im 'SHELL'-Kesselwagen für Generatoren nach Baraki Palms gebracht werden.
+3. Widerstand auf Macan	3.2	Schnell-Entsorgung	F3	Kalanga Fishworks Süd	Port Varan Süd	Abtransport von Fischabfällen im 'Niederbord kurz' nach Port Varan Süd. Bei Nutzung gedeckter Waggons ist anschließend eine Grundreinigung einzuplanen.

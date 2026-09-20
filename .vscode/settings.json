@@ -1,0 +1,8 @@
+{
+    "chat.tools.terminal.autoApprove": {
+        "/^python -c \"from pathlib import Path; import re, subprocess, tempfile; html = Path\\(r'd:\\\\Dokumente\\\\kreatives\\\\hobby-coding\\\\Webseiten\\\\macan-island-bahnverkehr\\\\macan_island_master_dispatcher_engine\\.html'\\)\\.read_text\\(encoding='utf-8'\\); js = re\\.findall\\(r'<script\\(\\?:\\[\\^>\\]\\*\\)>\\(\\.\\*\\?\\)</script>', html, flags=re\\.S\\)\\[-1\\]; f = tempfile\\.NamedTemporaryFile\\('w', suffix='\\.js', delete=False, encoding='utf-8'\\); f\\.write\\(js\\); f\\.close\\(\\); r = subprocess\\.run\\(\\['node', '--check', f\\.name\\], capture_output=True, text=True\\); print\\('EXIT', r\\.returncode\\); print\\(r\\.stdout\\.strip\\(\\)\\); print\\(r\\.stderr\\.strip\\(\\)\\)\"$/": {
+            "approve": true,
+            "matchCommandLine": true
+        }
+    }
+}

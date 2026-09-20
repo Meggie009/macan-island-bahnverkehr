@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Macan Island - Master Dispatcher Terminal</title>
+  <title>Macan Pacific Railway Company - MPRC Dispatch</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -32,6 +32,31 @@
     }
   </script>
   <style>
+    :root {
+      --menu-ink: #dce7e6;
+      --menu-muted: #8fa3a5;
+      --menu-line: rgba(220, 231, 230, 0.18);
+      --menu-blue: #8fc9d1;
+      --menu-amber: #e0b85a;
+    }
+
+    body {
+      background:
+        linear-gradient(135deg, rgba(8, 13, 18, 0.94), rgba(18, 33, 38, 0.86)),
+        radial-gradient(circle at 72% 18%, rgba(120, 177, 184, 0.2), transparent 34%),
+        #080d12;
+      color: var(--menu-ink);
+      font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+      letter-spacing: 0;
+    }
+
+    .font-mono, .font-sans, .font-serif { font-family: inherit !important; }
+    .font-mono { letter-spacing: 0.02em; }
+    h1, h2, h3, h4, p, span, button, li { letter-spacing: 0; }
+    button { text-transform: uppercase; }
+    .menu-panel { background: rgba(10, 19, 24, 0.82); border-color: var(--menu-line); }
+    .wagon-choice { background-color: var(--wagon-color); color: var(--wagon-text, #fff); border-color: rgba(0, 0, 0, 0.35); text-shadow: 0 1px 1px rgba(0, 0, 0, 0.45); }
+
     /* Custom Scrollbar for Tactical Screen */
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: #080d12; }
@@ -78,9 +103,9 @@
         <div class="w-3 h-3 rounded-full bg-macan-accent animate-pulse"></div>
         <div>
           <h1 class="font-mono text-lg font-bold tracking-wider text-macan-accent flex items-center gap-2">
-            MACAN DISPATCH <span class="text-xs px-2 py-0.5 rounded bg-macan-border text-slate-300">POLYNESIEN</span>
+            MACAN PACIFIC RAILWAY COMPANY <span class="text-xs px-2 py-0.5 rounded bg-macan-border text-slate-300">MPRC</span>
           </h1>
-          <p class="text-xs text-slate-400 font-mono">DISPONENT-ENG/NE #4097-MASTER [STRECKEN-KONTROLLE]</p>
+          <p class="text-xs text-slate-400 font-mono">BRIDGING PROGRESS &amp; FREEDOM · US-EAST ASIA ECONOMIC ASSISTANCE PROGRAM · 1967</p>
         </div>
       </div>
 
@@ -95,6 +120,11 @@
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
           NEUER ZUFALLSAUFTRAG
         </button>
+
+        <div class="flex items-center gap-1 rounded border border-macan-border bg-macan-bg p-1 text-[10px] font-mono">
+          <button id="mode-memory" onclick="setAssignmentMode('memory')" class="px-2 py-1 rounded bg-macan-accent text-black font-bold">GEDÄCHTNIS</button>
+          <button id="mode-pull" onclick="setAssignmentMode('pull')" class="px-2 py-1 rounded text-slate-400 hover:text-white">PULL</button>
+        </div>
 
         <button onclick="openEditorModal()" class="px-3 py-1.5 rounded text-xs font-mono font-bold bg-macan-gold text-black hover:bg-yellow-400 transition flex items-center gap-1.5 shadow-lg shadow-macan-gold/10">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
@@ -133,8 +163,8 @@
         <!-- Character O-Ton & Lore Box -->
         <div class="bg-macan-bg/80 border border-macan-border rounded p-4 mb-5">
           <div class="flex items-center gap-3 mb-2">
-            <div id="character-avatar" class="w-8 h-8 rounded-full bg-macan-accent/20 border border-macan-accent flex items-center justify-center font-bold text-macan-accent text-sm">
-              MA
+            <div id="character-avatar" class="w-9 h-9 rounded-full bg-macan-accent/20 border border-macan-accent flex items-center justify-center text-xl text-macan-accent">
+              ⚓
             </div>
             <div>
               <h3 id="character-name" class="text-xs font-bold font-mono text-macan-accent uppercase">MISS ADELAIDE</h3>
@@ -142,7 +172,7 @@
             </div>
           </div>
           <p id="lore-quote" class="text-sm italic text-slate-300 font-serif leading-relaxed pl-2 border-l-2 border-macan-accent">
-            „Die Ma'coco-Pflücker der Kelapa-Kooperative schieffen pausenlos Kopra nach Port Varan. Ich dulde keine rumstehenden Waggons am Kai 1! Schafft das Zeug unverzüglich zum Zwischenlager!“
+            „Die Ma'coco-Pflücker der Kelapa-Kooperative schaffen pausenlos Kopra nach Port Varan. Ich dulde keine rumstehenden Waggons am Kai. Schafft das Zeug unverzüglich zum Zwischenlager!“
           </p>
           <div id="lore-subtext" class="mt-2 text-xs text-slate-400 font-sans border-t border-macan-border/40 pt-2">
             Adelaide duldet keine Gleisblockaden am Hafen und droht, herrenlose Waggons ins Hafenbecken zu werfen.
@@ -198,8 +228,12 @@
           </div>
         </div>
 
-        <div class="mt-3 text-[11px] text-slate-400 italic bg-macan-bg/40 p-2 rounded border border-macan-border/40">
-          <span class="text-macan-gold font-bold font-mono">AUFLAGE:</span> <span id="meta-condition">Nebenprodukt der Ölpresse der Kelapa-Kooperative. Nur Export / Verwertung zulässig!</span>
+        <div class="mt-4 flex items-center justify-between gap-3 rounded border border-macan-green/40 bg-macan-green/5 p-3">
+          <div>
+            <div class="text-xs font-mono font-bold text-macan-green">AUFTRAG AUSFÜHREN</div>
+            <div class="text-[11px] text-slate-400">Nach dem Rangieren bestätigen. Die Wagenlage wird gespeichert.</div>
+          </div>
+          <button onclick="completeActiveTask()" class="shrink-0 rounded bg-macan-green px-3 py-2 text-xs font-mono font-bold text-black hover:bg-green-300">ABSCHLIESSEN</button>
         </div>
 
       </div>
@@ -251,8 +285,8 @@
             <span>Kessel (Säure-Grau #cfd8dc)</span>
           </div>
           <div class="flex items-center gap-1.5">
-            <span class="w-2.5 h-2.5 rounded bg-macan-gold"></span>
-            <span>Salonwagen Govaart</span>
+            <span class="w-2.5 h-2.5 rounded bg-[#4f6b58]"></span>
+            <span>Personenwagen W-09</span>
           </div>
           <div class="flex items-center gap-1.5">
             <span class="w-2.5 h-2.5 rounded bg-macan-alert"></span>
@@ -292,7 +326,7 @@
 
   <!-- FOOTER -->
   <footer class="border-t border-macan-border bg-macan-card text-center py-3 text-xs font-mono text-slate-500 mt-auto">
-    MACAN ISLAND DISPATCH SYSTEM &bull; AKTUELLES FORMAT 10 WAGGONS &bull; VOLLE PERSISTENZ (LOCALSTORAGE)
+    MACAN PACIFIC RAILWAY COMPANY (MPRC) &bull; BRIDGING PROGRESS &amp; FREEDOM &bull; PERSISTENZ AKTIV
   </footer>
 
 
@@ -319,7 +353,7 @@
       </div>
 
       <!-- Modal Content Area -->
-      <div class="p-5 overflow-y-auto flex-grow space-y-6">
+      <div class="p-3 overflow-y-auto flex-grow space-y-3">
 
         <!-- Mobile / Tap status indicator -->
         <div id="tap-selected-info" class="hidden bg-macan-accent/20 border border-macan-accent rounded p-2 text-xs font-mono text-macan-accent flex items-center justify-between">
@@ -328,7 +362,7 @@
         </div>
 
         <!-- TRACK LAYOUT GRID -->
-        <div id="editor-tracks-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div id="editor-tracks-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
           <!-- Dynamisch erzeugt -->
         </div>
 
@@ -389,6 +423,24 @@
   <!-- TOAST NOTIFICATION CONTAINER -->
   <div id="toast-container" class="fixed bottom-4 right-4 z-50 flex flex-col gap-2"></div>
 
+  <div id="completion-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-[60] flex items-center justify-center p-4 hidden">
+    <div class="bg-macan-card border-2 border-macan-green rounded-xl max-w-lg w-full p-5 shadow-2xl">
+      <div class="flex items-center justify-between mb-3">
+        <h2 id="completion-title" class="font-mono text-base font-bold text-macan-green uppercase">AUFTRAG ABGESCHLOSSEN</h2>
+        <button onclick="closeCompletionModal()" class="text-slate-400 hover:text-white text-xl">&times;</button>
+      </div>
+      <div class="grid grid-cols-[auto_1fr] gap-3 items-start">
+        <div id="completion-icon" class="text-4xl leading-none text-macan-gold">★</div>
+        <div>
+          <p id="completion-result" class="text-sm text-slate-200 leading-relaxed"></p>
+          <p id="completion-reward" class="mt-2 text-xs font-bold uppercase text-macan-gold"></p>
+        </div>
+      </div>
+      <p id="completion-comment" class="mt-4 border-l-2 border-macan-accent pl-3 text-sm italic text-slate-300"></p>
+      <button onclick="continueFromCompletion()" class="mt-5 w-full rounded bg-macan-accent px-3 py-2 text-xs font-mono font-bold text-black hover:bg-cyan-200">NÄCHSTEN AUFTRAG LADEN</button>
+    </div>
+  </div>
+
 
   <!-- JAVASCRIPT ENGINE LOGIC -->
   <script>
@@ -407,16 +459,16 @@
 
     // 2. WAGGONS (EXAKT 10 STÜCK, Speiseöl & Säure tragen IDENTISCHES Säure-Grau #cfd8dc)
     const WAGONS = [
-      { id: 'w1', name: 'Gedeckte Tonne', code: 'W-01', type: 'Gedeckt', color: '#8d6e63', textColor: '#ffffff' },
-      { id: 'w2', name: 'Kisten Kasten', code: 'W-02', type: 'Gedeckt', color: '#a1887f', textColor: '#ffffff' },
-      { id: 'w3', name: 'Kessel (Speiseöl)', code: 'W-03', type: 'Kessel', color: '#cfd8dc', textColor: '#1a2936' }, // SÄURE-GRAU
-      { id: 'w4', name: 'Kessel-VTG (Säure)', code: 'W-04', type: 'Kessel', color: '#cfd8dc', textColor: '#1a2936' }, // SÄURE-GRAU
-      { id: 'w5', name: 'Rungenwagen', code: 'W-05', type: 'Flach', color: '#78909c', textColor: '#ffffff' },
-      { id: 'w6', name: 'Niederbordwagen', code: 'W-06', type: 'Flach', color: '#8d8d8d', textColor: '#ffffff' },
-      { id: 'w7', name: 'Kühlwagen', code: 'W-07', type: 'Kühl', color: '#e0f7fa', textColor: '#006064' },
-      { id: 'w8', name: 'Fisch-Kessel', code: 'W-08', type: 'Kessel', color: '#4dd0e1', textColor: '#004d40' },
-      { id: 'w9', name: 'Govaart Salonwagen', code: 'W-09', type: 'Passagier', color: '#ffb700', textColor: '#000000' },
-      { id: 'w10', name: 'Militär-Flachwagen', code: 'W-10', type: 'Schwergut', color: '#558b2f', textColor: '#ffffff' }
+      { id: 'w1', name: 'Gedeckte Tonne', code: 'W-01', type: 'Gedeckt', color: '#8d6e63', textColor: '#ffffff', uses: ['Stückgut', 'Kopra-Kuchen', 'Alkohol'] },
+      { id: 'w2', name: 'Kisten Kasten', code: 'W-02', type: 'Gedeckt', color: '#a1887f', textColor: '#ffffff', uses: ['Stückgut', 'Kokosnüsse', 'Konservendosen', 'Kopra'] },
+      { id: 'w3', name: 'Kessel', code: 'W-03', type: 'Kessel', color: '#cfd8dc', textColor: '#1a2936', uses: ['Tank', 'Kokosöl'] }, // SÄURE-GRAU
+      { id: 'w4', name: 'Kessel-VTG (Säure)', code: 'W-04', type: 'Kessel', color: '#cfd8dc', textColor: '#1a2936', uses: ['Tank', 'Laborstoffe', 'Lösungsmittel', 'Gefahrgut'] }, // SÄURE-GRAU
+      { id: 'w5', name: 'Alpen-Kasten', code: 'W-05', type: 'Gedeckt', color: '#78909c', textColor: '#ffffff', uses: ['Stückgut', 'Konservendosen'] },
+      { id: 'w6', name: 'Niederbord kurz', code: 'W-06', type: 'Niederbord', color: '#8d8d8d', textColor: '#ffffff', uses: ['Schüttgut und Großwaren', 'Fischabfälle', 'Nussfasern'] },
+      { id: 'w7', name: 'Frost-Festung', code: 'W-07', type: 'Kühl', color: '#e0f7fa', textColor: '#006064', uses: ['Kühlfracht', 'Fisch'] },
+      { id: 'w8', name: 'Kalter Rausch', code: 'W-08', type: 'Spezialkühlwagen', color: '#f3e5ab', textColor: '#4e342e', uses: ['Kühlfracht', 'Alkohol'] },
+      { id: 'w9', name: 'Personenwagen', code: 'W-09', type: 'Güterzugbegleitwagen', color: '#4f6b58', textColor: '#ffffff', uses: ['Personen', 'Nuss-Sammler', 'Meth-Küche', 'Wachleute', 'Boss'] },
+      { id: 'w10', name: 'SHELL', code: 'W-10', type: 'Kessel', color: '#e0b400', textColor: '#1a1a1a', uses: ['Tank', 'Treibstoff'] }
     ];
 
     // Default Wagon Locations (Standard Startaufstellung)
@@ -433,231 +485,618 @@
       'w10': 'pv_nord'
     };
 
-    // 3. SZENARIEN KATALOG (12 SANIERTE, KONSISTENTE AUFTRÄGE MIT REGELN)
-    const SCENARIOS = [
+    // 3. SZENARIO-ENGINE: 13 GRUND-KNOTEN + 2 O-TON-VARIANTEN + LORE-OVERLAYS + EXTERNE FAKTOREN
+    const SCENARIO_BASES = [
       {
-        id: 1,
+        id: 'koppra_export',
         code: '#4097',
         title: 'KOPRA-KUCHEN EXPORT',
         cargoCode: 'FRACHT F6',
         cargoName: 'Kopra-Kuchen',
-        wagonId: 'w1', // Gedeckte Tonne
+        wagonId: 'w1',
         startTrackId: 'baraki',
         targetTrackId: 'pv_nord',
         character: {
-          name: "MISS ADELAIDE",
-          role: "HAFENMEISTERIN PORT VARAN",
-          avatar: "MA",
-          quote: "„Die Ma'coco-Pflücker der Kelapa-Kooperative schieffen pausenlos Kopra nach Port Varan. Ich dulde keine rumstehenden Waggons am Kai 1! Schafft das Zeug unverzüglich zum Zwischenlager!“",
-          subtext: "Adelaide duldet keine Gleisblockaden am Kai und droht, herrenlose Züge ins Hafenbecken zu werfen."
+          name: 'MISS ADELAIDE',
+          role: 'HAFENMEISTERIN PORT VARAN',
+          avatar: 'MA',
+          quote: '„Die Ma\'coco-Pflücker der Kelapa-Kooperative schaffen pausenlos Kopra nach Port Varan. Ich dulde keine rumstehenden Waggons am Kai. Schafft das Zeug unverzüglich zum Zwischenlager!“',
+          subtext: 'Adelaide duldet keine Gleisblockaden am Kai und droht, herrenlose Züge ins Hafenbecken zu werfen.'
         },
-        condition: "Nebenprodukt der Ölmühlen. Darf NIEMALS importiert, sondern nur abtransportiert werden!"
+        condition: 'Nebenprodukt der Ölmühlen. Darf nur abtransportiert und nicht wieder zurückgeführt werden.',
+        pressures: ['hafenstau', 'gang-druck', 'arbeiterschaft']
       },
       {
-        id: 2,
+        id: 'govaart_salon',
         code: '#8821',
-        title: 'GOVAART SALONWAGEN-ESKORTE',
+        title: 'PERSONENWAGEN-ESKORTE',
         cargoCode: 'FRACHT VIP',
-        cargoName: 'Salonwagen / Machtrepräsentation',
-        wagonId: 'w9', // Salonwagen
+        cargoName: 'Personenwagen / Machtrepräsentation',
+        wagonId: 'w9',
         startTrackId: 'pv_nord',
         targetTrackId: 'baraki',
         character: {
-          name: "GOVAART",
-          role: "BOSS VON MACAN ISLAND",
-          avatar: "GV",
-          quote: "„Bürgermeister Washington zittert vor dem Auditor. Ich werde ihn im gepanzerten Salonwagen nach Baraki begleiten. Bereitstellen am Hauptgleis, jetzt!“",
-          subtext: "Govaart verlangt uneingeschränkte Priorität für seine Inspektionstour."
+          name: 'GOVAART',
+          role: 'BOSS VON MACAN ISLAND',
+          avatar: 'GV',
+          quote: '„Washington zittert schon vor dem Auditor. Meine Eskorte fährt mit mir zur Inspektion, und alle anderen müssen sich in den Dschungel ducken.“',
+          subtext: 'Govaart verlangt uneingeschränkte Priorität für seinen Auftritt auf der Insel.'
         },
-        condition: "Personentransport mit Bewaffnung. Platzieren ohne Zugverzögerung."
+        condition: 'Personenwagen mit Bewaffnung. Keine Zugverzögerung und kein Halten auf Nebenstrecken.',
+        pressures: ['paranoia', 'militär', 'machtprobe']
       },
       {
-        id: 3,
+        id: 'saeure_stollen',
         code: '#1044',
         title: 'SÄURE-NACHSCHUB FÜR STOLLEN',
         cargoCode: 'FRACHT F8',
         cargoName: 'Säure / Chemie-Konserve',
-        wagonId: 'w4', // Kessel-VTG (Säure)
+        wagonId: 'w4',
         startTrackId: 'pv_nord',
         targetTrackId: 'oshira_kueche',
         character: {
-          name: "HEIDELBERG",
-          role: "CHEFMETH-LABORANT OSHIRA STOLLEN",
-          avatar: "HB",
-          quote: "„Die Reaktoren kühlen ab! Wenn der Kessel-VTG mit der Salzsäure vom Frachter nicht in einer Stunde in der Stollenküche steht, fliegt das Labor in die Luft!“",
-          subtext: "Gefahrstoff-Transport mit höchster Dringlichkeit."
+          name: 'HEIDELBERG',
+          role: 'CHEFMETH-LABORANT OSHIRA STOLLEN',
+          avatar: 'HB',
+          quote: '„Die Reaktoren kühlen ab. Wenn der Kessel-VTG nicht in der nächsten Stunde im Stollen steht, fliegt das Labor uns alle in die Luft.“',
+          subtext: 'Heidelberg ist ruhig, aber die Chemie ist tödlich. Jede Minute wird härter.'
         },
-        condition: "Ätzend. Nur auf Oshira Stollen Küche lieferbar (Kapazität max 1!)."
+        condition: 'Ätzende Chemikalien. Nur auf Oshira Stollen Küche lieferbar mit Schutzeinrichtung und höchster Dringlichkeit.',
+        pressures: ['chemie', 'hitze', 'gefahr']
       },
       {
-        id: 4,
+        id: 'fischkonserven_meth',
         code: '#5539',
         title: 'FISCHKONSERVEN & METH-COUP',
         cargoCode: 'FRACHT F2',
         cargoName: 'Getarnte Fischkonserven',
-        wagonId: 'w7', // Kühlwagen
+        wagonId: 'w5',
         startTrackId: 'kalanga_sued',
         targetTrackId: 'pv_nord',
         character: {
-          name: "WAYAN",
-          role: "LEITER KALANGA FISHWORKS",
-          avatar: "WY",
-          quote: "„In den Sardinendosen unter dem Eis liegen 150kg Meth aus Heidelbergs Stollen. Der Trawler der Schwarzflotte verlässt den Pier um Punkt Mitternacht!“",
-          subtext: "Illegale Fracht getarnt als Speisefisch-Export."
+          name: 'WAYAN',
+          role: 'LEITER KALANGA FISHWORKS',
+          avatar: 'WY',
+          quote: '„Die Konserven müssen sauber und schnell laufen. Wenn die Schwarzflotte anlegt, ist der Hafen keine Option mehr.“',
+          subtext: 'Wayan will die Fracht loswerden, bevor die Rebellen oder die Gang auf der Kaimauer auftauchen.'
         },
-        condition: "Kühlkette einhalten und zügig zum Frachter an Port Varan Nord."
+        condition: 'Kühlkette muss aufrechterhalten und die Fracht vor Sichtkontrollen verborgen werden.',
+        pressures: ['mischzug', 'tarnung', 'kai-kontrolle']
       },
       {
-        id: 5,
+        id: 'kokosoel_lieferung',
         code: '#3312',
         title: 'KOKOSÖL FÜR DIE FISCHFABRIK',
         cargoCode: 'FRACHT F5',
         cargoName: 'Kokosöl (Speiseöl)',
-        wagonId: 'w3', // Kessel Speiseöl
+        wagonId: 'w3',
         startTrackId: 'baraki',
         targetTrackId: 'kalanga_nord',
         character: {
-          name: "NYOMAN",
-          role: "LEITER KELAPA-KOOPERATIVE",
-          avatar: "NY",
-          quote: "„Die Ma'coco haben fünf Tonnen reinstes Kokosöl gepresst. Wayan braucht es in Kalanga zum Einlegen der Fischkonserven. Schickt den Kessel los!“",
-          subtext: "Direkte Lieferkette zwischen den indigenen Erzeugern und der Konservenfabrik."
+          name: 'NYOMAN',
+          role: 'LEITER KELAPA-KOOPERATIVE',
+          avatar: 'NY',
+          quote: '„Das Öl ist sauber, die Pressen laufen, und Wayan wartet mit hungrigen Händen am Nordgleis. Wir brauchen den Kessel auf der Schiene, nicht im Dschungel.“',
+          subtext: 'Nyoman kümmert sich um die Ernte und die Arbeiter, aber der Druck von Wayan wird härter.'
         },
-        condition: "Nahrungsmittel-Qualität. Transport von Baraki nach Kalanga Nord."
+        condition: 'Nahrungsqualität und klare Lieferkette. Kein Schlampentransport zwischen den Pflanzen.',
+        pressures: ['arbeitsdruck', 'erntesaison', 'fabrikstau']
       },
       {
-        id: 6,
+        id: 'abwasser_entsorgung',
         code: '#7741',
         title: 'CHEMIE-ABWASSER ENTSORGUNG',
         cargoCode: 'FRACHT F10',
         cargoName: 'Chemisches Abwasser',
-        wagonId: 'w4', // Kessel VTG
+        wagonId: 'w4',
         startTrackId: 'oshira_kueche',
         targetTrackId: 'pv_sued',
         character: {
-          name: "WOKONG & MA'AN",
-          role: "DSCHUNGEL-REBELLEN",
-          avatar: "MA",
-          quote: "„Govaarts Labor verseucht das Grundwasser! Schafft den Giftschlamm sofort zur Entsorgungs-Mole an Port Varan Süd, oder wir sprengen die Schienen!“",
-          subtext: "Erpressung durch die Rebellen. Giftmüll darf nicht im Dschungel verbleiben."
+          name: 'WOKONG & MA\'AN',
+          role: 'DSCHUNGEL-REBELLEN',
+          avatar: 'MA',
+          quote: '„Wenn Govaart den Stollen weiter verseucht, wird die Insel nicht länger still bleiben. Der Kessel geht zur Süd-Mole, oder die Schienen werden brennen.“',
+          subtext: 'Die Guerilla macht keine leeren Drohungen. In diesem Sektor ist eine große Sicherheitssperre zu erwarten.'
         },
-        condition: "Gefahrgut muss zwingend zur Süd-Mole abtransportiert werden."
+        condition: 'Gefahrgut muss an die Entsorgungs-Mole. Kein Verstecken in der Wildnis und keine öffentliche Umleitung.',
+        pressures: ['sabotage', 'rebellen', 'umwelt']
       },
       {
-        id: 7,
+        id: 'altblech_dosen',
         code: '#9012',
         title: 'ALTBLECH FÜR CONSERVENDOSEN',
         cargoCode: 'FRACHT F16',
         cargoName: 'Altblech-Muster',
-        wagonId: 'w5', // Rungenwagen
+        wagonId: 'w5',
         startTrackId: 'pv_nord',
         targetTrackId: 'kalanga_nord',
         character: {
-          name: "WAYAN",
-          role: "LEITER KALANGA FISHWORKS",
-          avatar: "WY",
-          quote: "„Uns gehen die Blechtafeln für die Fischdosen aus! Das Wrackgut vom Frachter muss vom Nordkai nach Kalanga Nord gebracht werden.“",
-          subtext: "Rohmaterial für die Verpackungsstraßen der Fischfabrik."
+          name: 'WAYAN',
+          role: 'LEITER KALANGA FISHWORKS',
+          avatar: 'WY',
+          quote: '„Wenn die Dosen fehlen, kommt die ganze Fabrik zum Erliegen. Die Bleche kommen direkt vom Pier, und die Schienen müssen sauber bleiben.“',
+          subtext: 'Wayan ist unordentlich, aber die Produktion darf nicht stillstehen.'
         },
-        condition: "Transport von Schwergut vom Import-Pier nach Kalanga."
+        condition: 'Transport von Schwergut an den Verarbeitungsbereich der Fischfabrik. Kein Leerlauf bei den Dosenstraßen.',
+        pressures: ['produktion', 'materialmangel', 'verlegung']
       },
       {
-        id: 8,
+        id: 'wasser_labor',
         code: '#2209',
-        title: 'TRINKWASSER-BOYKOTT REDUZIEREN',
+        title: 'TRINKWASSER FÜR DEN STOLLEN',
         cargoCode: 'FRACHT F19',
         cargoName: 'Trinkwasser-Zisterne',
-        wagonId: 'w3', // Kessel
+        wagonId: 'w3',
         startTrackId: 'baraki',
         targetTrackId: 'oshira_kueche',
         character: {
-          name: "BÜRGERMEISTER WASHINGTON",
-          role: "ZIVILVERWALTUNG MACAN",
-          avatar: "WS",
-          quote: "„Die Guerilla hat die Bergwasserleitung gecuttet! Heidelberg streikt im Stollen ohne Trinkwasser. Bringt sofort einen Kessel aus Baraki hoch!“",
-          subtext: "Washington versucht die Balance zwischen den Fraktionen zu wahren."
+          name: 'BÜRGERMEISTER WASHINGTON',
+          role: 'ZIVILVERWALTUNG MACAN',
+          avatar: 'WS',
+          quote: '„Die Guerilla hat die Wasserleitung beschädigt. Ich will keine neue Schießerei im Dschungel. Bringt die Zisterne hinein, bevor die Leute anfangen zu reden.“',
+          subtext: 'Washington versucht, die Enklave friedlich zu halten und die öffentliche Ordnung nicht zu verlieren.'
         },
-        condition: "Lebensnotwendiges Trinkwasser für das Laborpersonal im Stollen."
+        condition: 'Lebensnotwendigkeit für das Labor. Kein Schlamassel in den Bergen und keine Eskalation an der Strecke.',
+        pressures: ['wasserknappheit', 'politik', 'rebellen']
       },
       {
-        id: 9,
+        id: 'meth_zwischenlager',
         code: '#6118',
         title: 'METH-ROHSTOFF COURIER',
         cargoCode: 'FRACHT F9',
         cargoName: 'Meth-Rohstoff (Kristall-Paste)',
-        wagonId: 'w2', // Kisten Kasten
+        wagonId: 'w2',
         startTrackId: 'oshira_kueche',
         targetTrackId: 'kalanga_sued',
         character: {
-          name: "HEIDELBERG",
-          role: "CHEFMETH-LABORANT OSHIRA STOLLEN",
-          avatar: "HB",
-          quote: "„Die Paste ist getrocknet. Verladet die Kisten in einen unauffälligen gedeckten Waggon und bringt sie direkt in Wayans Fischverpackung!“",
-          subtext: "Interne Zwischenlieferung unter strengster Geheimhaltung."
+          name: 'HEIDELBERG',
+          role: 'CHEFMETH-LABORANT OSHIRA STOLLEN',
+          avatar: 'HB',
+          quote: '„Die Paste ist trocken. Verladet sie nur im geschlossenen Wagen und verschiebt sie im Takt. Jede Störung macht die Fabrik zu einem offenen Flaschenhals.“',
+          subtext: 'Heidelberg ist der Nüchternste in der ganzen Insel, und genau deshalb ist er gefährlich.'
         },
-        condition: "Hoher Wert. Direkter Transfer Stollenküche -> Kalanga Süd."
+        condition: 'Hoher Wert und größtes Risiko. Direkte, verdeckte Verlegung zum Verarbeitungsbereich ohne öffentliche Sicht.',
+        pressures: ['tarnung', 'geheimnis', 'sabotage']
       },
       {
-        id: 10,
+        id: 'fischabfall_entfernung',
         code: '#1182',
         title: 'FISCHABFALL-RÄUMUNG',
         cargoCode: 'FRACHT F3',
         cargoName: 'Gärende Fischabfälle',
-        wagonId: 'w8', // Fisch-Kessel
+        wagonId: 'w6',
         startTrackId: 'kalanga_sued',
         targetTrackId: 'pv_sued',
         character: {
-          name: "MISS ADELAIDE",
-          role: "HAFENMEISTERIN PORT VARAN",
-          avatar: "MA",
-          quote: "„Der Gestank aus Kalanga zieht rüber bis zum Yachthafen! Rollt den Fisch-Kessel sofort runter zur Sumpf-Mole an Port Varan Süd!“",
-          subtext: "Entsorgungsfahrt zur Meeres-Entsorgungsmole."
+          name: 'MISS ADELAIDE',
+          role: 'HAFENMEISTERIN PORT VARAN',
+          avatar: 'MA',
+          quote: '„Der Gestank aus Kalanga zieht bis an die Kaimauer. Ich will diesen Waggon verschlossen und weg, bevor die Möwen anfangen, Streit zu suchen.“',
+          subtext: 'Adelaide toleriert keine stinkenden Rückstände am Kai und keine Blockaden im Hafen.'
         },
-        condition: "Geruchsbelästigung. Nur für Port Varan Süd freigegeben."
+        condition: 'Geruchsbelästigung und Entsorgung. Nur für Port Varan Süd freigegeben, damit nichts am Hauptkai landet.',
+        pressures: ['hygiene', 'gestank', 'kai-sperre']
       },
       {
-        id: 11,
+        id: 'diesel_notfall',
         code: '#4490',
         title: 'DSCHUNGEL-TREIBSTOFF NOTFALL',
         cargoCode: 'FRACHT F12',
         cargoName: 'Diesel-Kraftstoff',
-        wagonId: 'w3', // Kessel
+        wagonId: 'w10',
         startTrackId: 'pv_nord',
-        targetTrackId: 'baraki',
+        targetTrackId: 'oshira_abst',
         character: {
-          name: "NYOMAN",
-          role: "LEITER KELAPA-KOOPERATIVE",
-          avatar: "NY",
-          quote: "„Die Generatoren der Ma'coco-Mühlen fallen aus! Wir brauchen den Kesselwagen mit Treibstoff vom Hafen umgehend in Baraki Palms.“",
-          subtext: "Versorgungsfahrt für die Verarbeitungsanlagen."
+          name: 'NYOMAN',
+          role: 'LEITER KELAPA-KOOPERATIVE',
+          avatar: 'NY',
+          quote: '„Wenn die Generatoren ausfallen, fällt die ganze Ölmühle aus. Die Kleingruppe braucht ihre Notstromversorgung, und ich brauche meine Leute am Leben.“',
+          subtext: 'Nyoman ist nicht laut, aber er bewertet alles in eigenen Überlebenszeiten.'
         },
-        condition: "Treibstoff-Import vom Frachter zum Binnenland-Standort."
+        condition: 'Notfallversorgung für die Maschinen und die Loks im Inneren. Kein zweiter Versuch, wenn die Leistung wegfällt.',
+        pressures: ['generator', 'notfall', 'dschungel']
       },
       {
-        id: 12,
+        id: 'wachen_verlegung',
         code: '#8301',
-        title: 'AUDIT-PANIK: SCHWERGUT RÄUMEN',
-        cargoCode: 'FRACHT MIL',
-        cargoName: 'Militär-Ausrüstung',
-        wagonId: 'w10', // Militär-Flachwagen
+        title: 'WACHEN-VERLEGUNG ZUM STOLLEN',
+        cargoCode: 'FRACHT F14',
+        cargoName: 'Wachgruppe / Verstärkung',
+        wagonId: 'w9',
+        startTrackId: 'pv_sued',
+        targetTrackId: 'oshira_kueche',
+        character: {
+          name: 'GOVAART',
+          role: 'BOSS VON MACAN ISLAND',
+          avatar: 'GV',
+          quote: '„Wenn die Rebellen den Stollen berühren, will ich keine leeren Worte. Eine Verstärkung in den Berg, der Rest hält die Küste.“',
+          subtext: 'Govaart sieht Verbände nicht als Hilfe, sondern als Mittel seiner Sichtbarkeit.'
+        },
+        condition: 'Sicherheitsverlegung mit bewaffnetem Begleitpersonal. Keine unkontrollierte Durchfahrt durch die Dörfer.',
+        pressures: ['macht', 'sicherheit', 'rebellen']
+      },
+      {
+        id: 'frischefisch_frost',
+        code: '#2401',
+        title: 'FRISCHE FISCHE NACH KALANGA',
+        cargoCode: 'FRACHT F1',
+        cargoName: 'Frischefisch',
+        wagonId: 'w7',
         startTrackId: 'pv_nord',
         targetTrackId: 'kalanga_nord',
         character: {
-          name: "BÜRGERMEISTER WASHINGTON",
-          role: "ZIVILVERWALTUNG MACAN",
-          avatar: "WS",
-          quote: "„Ein Inspektor der Kolonialbehörde ist im Anflug! Der Rüstungswagen darf nicht offen am Hafen stehen! Versteckt ihn auf Kalanga Nord!“",
-          subtext: "Panik vor Entdeckung verdeckter Militärgüter."
+          name: 'WAYAN',
+          role: 'LEITER KALANGA FISHWORKS',
+          avatar: 'WY',
+          quote: '„Das Kühlhaus ist am Anschlag. Wenn die Fische durch die Hitze laufen, wird es in der Halle zu einem Höllenstunk.“',
+          subtext: 'Wayan weiß, dass die Hitze in der Nacht schneller zu Verderb führt als jeder Aufstand.'
         },
-        condition: "Verlagerung von Militärgut auf Nebengleise."
+        condition: 'Kühlkette muss eingehalten werden. Jede Verzögerung führt zu Verderb und dadurch zu hoher Verlust- und Machtproblematik.',
+        pressures: ['hitze', 'kühlkette', 'fabrik']
       }
     ];
+
+    const SCENARIO_TONES = [
+      {
+        id: 'tight',
+        tag: 'Druck',
+        atmosphere: 'Die Insel ist unter Spannung. Die Luft riecht nach Salz, Kokosöl und Dschungel. Jeder Schritt wirkt wie ein unruhiger Atemzug.',
+        quote: 'Die Anweisung kommt knapp und dreckig: keine Heldenshow, keine Extratour, bring den Wagen rüber.'
+      },
+      {
+        id: 'covert',
+        tag: 'Verdeckt',
+        atmosphere: 'Etwas beobachtet dich. Die Palmen wackeln, die Kaimauer ist leer, und das Schweigen fühlt sich nach Gefahr an.',
+        quote: 'Halte den Ball flach. Auf dieser Insel hat sogar ein leerer Waggon Ohren.'
+      }
+    ];
+
+    const CHARACTER_LINES = {
+      'MISS ADELAIDE': [
+        'Bei allen rostigen Ankern, stell den Wagen ab, bevor wieder irgendein Hafenhengst seine Männlichkeit auf meinem Gleis parkt.',
+        'Wenn das Ding noch länger im Weg steht, verheirate ich es mit dem nächsten Frachter. Der hat wenigstens einen guten Liegeplatz.',
+        'Los, Matrose. Zwei Waggons sind Rangierarbeit, drei sind bereits eine schlechte Charaktereigenschaft.'
+      ],
+      'GOVAART': [
+        'Ich bezahle nicht für Muskelspiel. Ich bezahle dafür, dass mein Wagen dort steht, wo alle ihn sehen.',
+        'Wer mir den Weg versperrt, darf den Dschungel zu Fuß kennenlernen. Das ist keine Drohung, das ist Inselverwaltung.'
+      ],
+      'HEIDELBERG': [
+        'Keine Panik. Nur ein geschlossener Wagen, ein sauberer Weg und niemand, der neugierig an den Ventilen dreht.',
+        'Wenn du den Wagen falsch stellst, wird die Chemie nicht beleidigt sein. Sie wird nur reagieren.'
+      ],
+      'WAYAN': [
+        'Die Fabrik wartet nicht auf deine große Rangierkunst. Stell den Wagen hin und lass die Dosen weiterlaufen.',
+        'Wenn die Kühlkette reißt, riecht die Halle schlimmer als ein Männerstammtisch nach drei Tagen Regen.'
+      ],
+      'NYOMAN': [
+        'Keine Aufregung. Die Leute brauchen die Fracht, und ich brauche keinen Streit auf meinem Werkgleis.',
+        'Bring den Wagen ruhig hinüber. Wir haben schon genug Feuer in der Presse.'
+      ],
+      'BÜRGERMEISTER WASHINGTON': [
+        'Bitte ohne Schüsse, ohne Gerüchte und ohne weitere Schäden an der Strecke. Mehr verlange ich heute nicht.',
+        'Wenn dieser Wagen pünktlich ankommt, kann ich wenigstens einmal so tun, als hätte die Verwaltung noch Einfluss.'
+      ],
+      'WOKONG & MA\'AN': [
+        'Die Insel vergisst nichts. Stell den Wagen ab, und vielleicht bleibt diese Nacht ruhig.',
+        'Keine Gangshow, kein Govaart-Theater. Nur die Fracht an den richtigen Ort.'
+      ]
+    };
+
+    function getCharacterLine(base, tone, mode) {
+      const lines = CHARACTER_LINES[base.character.name];
+      const line = lines ? lines[Math.floor(Math.random() * lines.length)] : tone.quote;
+      return line;
+    }
+
+    const ENVIRONMENT_OVERLAYS = [
+      {
+        id: 'heatwave',
+        label: 'Tropenhitze',
+        weight: 1.1,
+        trigger: 'Die Sonne liegt schwer auf den Schienen. Die Arbeitskräfte schwitzen durch, und der Verderb nimmt sofort zu.',
+        risk: 'Kühlkette und Hygiene sind akut gefährdet.'
+      },
+      {
+        id: 'storm',
+        label: 'Tropensturm',
+        weight: 0.9,
+        trigger: 'Schweres Gewitter rollt von der Küste heran und drückt die Güter in die engen Gleisräume.',
+        risk: 'Packen, Winde und nasse Schienen erhöhen den Druck auf jede Rangierfahrt.'
+      },
+      {
+        id: 'rebellion',
+        label: 'Dschungel-Sichtungen',
+        weight: 0.8,
+        trigger: 'Späher der Rebellen halten sich in den Hügeln auf und beobachten die Trasse mit kalter Geduld.',
+        risk: 'Sicherheitslage steigt, und jeder falsche Rangier-Schritt wird sofort nachverfolgt.'
+      },
+      {
+        id: 'hafenblock',
+        label: 'Hafenstau',
+        weight: 1.1,
+        trigger: 'Frachter, Kaimauer und Warteschlangen greifen in den Ablauf ein und versperren die Logik der Pier.',
+        risk: 'Die eigentliche Aufgabe wird zum Problem der Ankunftslogik am Kai.'
+      },
+      {
+        id: 'guardpressure',
+        label: 'Gang-Patrouille',
+        weight: 0.9,
+        trigger: 'Die Macan Garde schiebt sich entlang der Gütergleise und sucht nach Verlegenheiten und Schwachstellen.',
+        risk: 'Fahrten mit sensibler Fracht müssen vorsichtiger, aber auch schneller werden.'
+      },
+      {
+        id: 'watercrisis',
+        label: 'Wasser-Not',
+        weight: 0.7,
+        trigger: 'Risse in der Wasserversorgung und trockene Akkumulatoren machen jede kleine Versorgung zur Krise.',
+        risk: 'Die Logistik auf der Insel gerät in Bewegung, weil Wasser und Strom im selben Atemzug gebraucht werden.'
+      },
+      {
+        id: 'garbage',
+        label: 'Gestank & Schmutz',
+        weight: 1.0,
+        trigger: 'Fischreste, Dschungelstaub und feuchte Luft vermischen sich in einem unerträglichen Gestank.',
+        risk: 'Das Problem wirkt nicht nur auf die Ware, sondern auf alle Akteure und die Stimmung der Insel.'
+      },
+      {
+        id: 'solarfall',
+        label: 'Solar-Ausfall',
+        weight: 0.7,
+        trigger: 'Die Solaranlage bricht zusammen, und die ganze Fläche des Ökonomie-Lagers hängt am Generator.',
+        risk: 'Wer an der falschen Stelle liegt, verliert die Versorgung, den Ausgleich und die Sicherheit.'
+      }
+    ];
+
+    const PRIORITY_PROFILES = [
+      {
+        id: 'routine',
+        label: 'REGELBETRIEB',
+        weight: 1.35,
+        urgency: 'Arbeite sauber und ohne unnötige Hektik. Die Strecke bleibt offen, solange du sie nicht blockierst.',
+        score: 1
+      },
+      {
+        id: 'production',
+        label: 'PRODUKTIONSDRUCK',
+        weight: 1.15,
+        urgency: 'Die nächste Verarbeitungsschicht wartet. Vermeide Standzeiten und räume Engpässe zuerst.',
+        score: 3
+      },
+      {
+        id: 'urgent',
+        label: 'DRINGEND',
+        weight: 0.9,
+        urgency: 'Keine freiwillige Pause. Ein leerer Abzweig ist nur dann frei, wenn du ihn auch wieder sicher verlässt.',
+        score: 5
+      },
+      {
+        id: 'critical',
+        label: 'KRITISCH',
+        weight: 0.55,
+        urgency: 'Sofortfahrt. Verzögerung bedeutet Verderb, Stromverlust oder eine politische Krise am Zielgleis.',
+        score: 8
+      }
+    ];
+
+    const OPERATION_MODES = [
+      {
+        id: 'clean',
+        label: 'SAUBERE ZUSTELLUNG',
+        weight: 1.2,
+        instruction: 'Halte die Rangierbewegungen knapp: übernehmen, stellen, sichern, melden.',
+        score: 1
+      },
+      {
+        id: 'relay',
+        label: 'UMSETZEN MIT ZWISCHENHALT',
+        weight: 1.0,
+        instruction: 'Ein Zwischenhalt ist erlaubt, aber der Waggon darf keinen Produktions- oder Fluchtweg blockieren.',
+        score: 3
+      },
+      {
+        id: 'silent',
+        label: 'VERDECKTE FAHRT',
+        weight: 0.75,
+        instruction: 'Keine unnötige Präsenz am Kai: kurze Wege, kein Vorzeigen der Fracht, Handbremsen doppelt prüfen.',
+        score: 5
+      }
+    ];
+
+    const STORY_BEATS = [
+      { id: 'oil_debt', title: 'ÖL GEGEN FISCH', trigger: 'Wayan hält Nyomans Öl zurück, bis der Fischabfall aus Kalanga verschwunden ist.', voice: 'Zwei Fabriken streiten, und der Wagen ist der einzige Zeuge, der noch pünktlich sein kann.', bases: ['kokosoel_lieferung', 'fischabfall_entfernung'] },
+      { id: 'meth_press', title: 'DOSEN MIT GEHEIMNIS', trigger: 'Heidelberg braucht Kalangas Fischstraße: Zwischen den Dosen reist etwas, das auf keinem Frachtbrief steht.', voice: 'Auf dem Papier ist es Fisch. Im Bauch der Dose steckt der Grund, warum Govaart nervös schläft.', bases: ['meth_zwischenlager', 'fischkonserven_meth'] },
+      { id: 'storm_shelter', title: 'STURM ÜBER DER BAY', trigger: 'Ein Sturm drückt Schiffe, Kisten und Menschen in dieselben wenigen Gleise.', voice: 'Der Wind macht aus jedem Rangierfehler eine öffentliche Angelegenheit.', bases: ['koppra_export', 'frischefisch_frost', 'kokosoel_lieferung'] },
+      { id: 'garde_toll', title: 'DIE GARDE WILL IHREN TEIL', trigger: 'Die Macan Garde verlangt Treibstoff und einen Begleitwagen, bevor sie die Strecke freigibt.', voice: 'Schutzgeld fährt heute auf Schienen. Wer nicht zahlt, steht im Dschungel.', bases: ['diesel_notfall', 'wachen_verlegung', 'govaart_salon'] },
+      { id: 'rebellion_line', title: 'DIE BERGLINIE SCHWEIGT', trigger: 'Wokongs Leute beobachten die Zufahrt zum Stollen und warten auf einen Fehler.', voice: 'Der Wald ist still, aber nicht leer. Bring die Fracht durch, bevor jemand den Mut findet.', bases: ['wasser_labor', 'saeure_stollen', 'wachen_verlegung'] },
+      { id: 'adelaide_clearance', title: 'ADELAIDE RÄUMT AUF', trigger: 'Drei Trawler wollen gleichzeitig an die Kaimauer. Adelaide braucht Platz und keine Ausreden.', voice: 'Der Hafen gehört dem, der zuerst Platz schafft. Alles andere ist Männertheater mit Bremsklötzen.', bases: ['koppra_export', 'fischabfall_entfernung', 'altblech_dosen'] },
+      { id: 'washington_audit', title: 'PAPIERE UND PANIK', trigger: 'Washington erwartet Prüfer und muss die Verwaltung vor dem Hafenchaos verstecken.', voice: 'Ein sauberer Zugverband ist billiger als eine Erklärung vor der Hauptstadt.', bases: ['govaart_salon', 'wasser_labor', 'altblech_dosen'] },
+      { id: 'workers_strike', title: 'DIE ARBEITER WARTEN', trigger: 'Ma\'coco und die Fischwerker drohen mit Stillstand, wenn Wasser und Verpflegung ausbleiben.', voice: 'Die Leute haben wenig Macht, aber sie haben Hände. Wenn die stillstehen, steht die Insel.', bases: ['wasser_labor', 'kokosoel_lieferung', 'frischefisch_frost'] },
+      { id: 'chemical_trace', title: 'GERUCH VON CHEMIE', trigger: 'Ma\'an verfolgt die Rückstände aus dem Stollen und verlangt eine saubere Entsorgung.', voice: 'Wer den Kessel falsch stellt, hinterlässt eine Spur, die bis zum Meer reicht.', bases: ['abwasser_entsorgung', 'saeure_stollen'] },
+      { id: 'visitor_cover', title: 'FREMDE AM KAI', trigger: 'Besucher und Prüfer sind an Bord. Der einzige Personenwagen wird plötzlich zum wichtigsten Gleisstück der Insel.', voice: 'Ein Lächeln für die Gäste, eine Waffe unter der Bank und bloß keine Fragen zur Fischladung.', bases: ['govaart_salon', 'wachen_verlegung'] },
+      { id: 'factory_breakdown', title: 'DIE PRESSE STEHT', trigger: 'Ein Maschinenschaden legt Kalangas Dosenstraße lahm. Ersatzteile müssen vor der nächsten Schicht eintreffen.', voice: 'Wayan nennt es Wartung. Die Arbeiter nennen es ein Wunder, wenn es heute noch läuft.', bases: ['altblech_dosen', 'kokosoel_lieferung', 'fischkonserven_meth'] },
+      { id: 'bunker_blackout', title: 'LICHT AUS IM STOLLEN', trigger: 'Die Generatoren stottern unter dem Berg, während Heidelberg seine letzte saubere Charge bewacht.', voice: 'Im Dunkeln wird jede Kiste wertvoll und jedes Geräusch verdächtig.', bases: ['diesel_notfall', 'meth_zwischenlager', 'saeure_stollen'] },
+      { id: 'quarantine', title: 'GELBE FLAGGE AM KAI', trigger: 'Ein kranker Matrose bringt die Hafenverwaltung in Bewegung und die Pier unter Quarantäne.', voice: 'Heute wird nicht gepfiffen. Heute wird Abstand gehalten.', bases: ['wachen_verlegung', 'wasser_labor', 'fischabfall_entfernung'] },
+      { id: 'crane_failure', title: 'DER KRAN HÄNGT', trigger: 'Der alte Kaikran steht schief. Ohne Ersatzteile bleibt der nächste Frachter draußen.', voice: 'Stahl rostet langsam, aber Rechnungen kommen schnell.', bases: ['altblech_dosen', 'diesel_notfall', 'koppra_export'] },
+      { id: 'rat_infestation', title: 'RATTEN IM KOPRA', trigger: 'In Baraki sind die Vorräte angefressen. Reinigungsmittel und geschlossene Wagen müssen her.', voice: 'Die Ratten zahlen kein Schutzgeld. Sie nehmen sich einfach alles.', bases: ['koppra_export', 'wasser_labor'] },
+      { id: 'missing_manifest', title: 'FALSCHE PAPIERE', trigger: 'Ein Frachtbrief ist verschwunden. Washington braucht den richtigen Wagen am richtigen Ort.', voice: 'Ein Stempel kann auf Macan mehr Schaden anrichten als ein Schuss.', bases: ['govaart_salon', 'altblech_dosen', 'fischkonserven_meth'] },
+      { id: 'night_shift', title: 'NACHTSCHICHT', trigger: 'Die Öfen und Dosenlinien laufen bis nach Mitternacht. Jede Verzögerung kostet Hände und Nerven.', voice: 'Nachts gehört die Insel denen, die noch arbeiten.', bases: ['kokosoel_lieferung', 'frischefisch_frost', 'altblech_dosen'] },
+      { id: 'reef_grounding', title: 'AUFGRUND GELAUFEN', trigger: 'Ein Trawler sitzt draußen auf dem Riff fest. Seine Ladung muss über die Pier weiterlaufen.', voice: 'Das Meer hat genommen, was ihm gehört. Der Rest ist jetzt Eisenbahnsache.', bases: ['fischkonserven_meth', 'fischabfall_entfernung', 'frischefisch_frost'] },
+      { id: 'fuel_ration', title: 'DER LETZTE TANK', trigger: 'Nur ein Tankwagen ist noch frei. Govaart, Nyoman und die Generatoren wollen ihn gleichzeitig.', voice: 'Wer zuerst an der Kupplung ist, schreibt heute die Inselgeschichte.', bases: ['diesel_notfall', 'kokosoel_lieferung', 'wachen_verlegung'] },
+      { id: 'bridge_washout', title: 'WASSER ÜBER DER TRASSE', trigger: 'Regen hat den Rand der Bergstrecke ausgespült. Die Fahrt muss kurz und kontrolliert bleiben.', voice: 'Der Dschungel nimmt sich die Strecke Zentimeter für Zentimeter zurück.', bases: ['wasser_labor', 'saeure_stollen', 'meth_zwischenlager'] },
+      { id: 'rum_delivery', title: 'RUM FÜR DIE GARDE', trigger: 'Die Garde verlangt ihre Ration, bevor sie die Weichen besetzt.', voice: 'Ein trockener Hals macht aus jedem Wachmann einen kleinen Diktator.', bases: ['wachen_verlegung', 'govaart_salon'] },
+      { id: 'hospitality', title: 'GÄSTE VON ÜBERSEE', trigger: 'Investoren sind eingetroffen und Washington braucht eine Fahrt, die nach Ordnung aussieht.', voice: 'Lächeln, winken, nichts erklären. Die übliche Zeremonie.', bases: ['govaart_salon', 'wasser_labor'] },
+      { id: 'workshop_fire', title: 'FEUER IN DER HÜTTE', trigger: 'Ein Ofenbrand hat Material und Arbeiter erschreckt. Die Produktion darf trotzdem nicht ausfallen.', voice: 'Rauch ist die einzige Fahne, die auf Macan immer ehrlich ist.', bases: ['kokosoel_lieferung', 'wasser_labor', 'diesel_notfall'] },
+      { id: 'reef_patrol', title: 'BOOTE IM DUNKEL', trigger: 'Unbekannte Boote kreuzen vor Bulan Bay. Die Garde will Verstärkung an den Hafen.', voice: 'Auf dem Wasser bewegt sich etwas, das keine Frachtpapiere braucht.', bases: ['wachen_verlegung', 'govaart_salon', 'diesel_notfall'] },
+      { id: 'filter_change', title: 'DIE LUFT WIRD DICK', trigger: 'Die Abluft im Stollen kippt. Filtermaterial muss hinein, bevor jemand hustet.', voice: 'Unter Beton wird selbst ein kleiner Fehler zu einer persönlichen Wetterlage.', bases: ['saeure_stollen', 'meth_zwischenlager', 'wasser_labor'] },
+      { id: 'dock_strike', title: 'HÄNDE WEG VON DER KUPPLUNG', trigger: 'Die Hafenarbeiter legen kurz die Arbeit nieder und verlangen bessere Verpflegung.', voice: 'Adelaide nennt es Pause. Wayan nennt es Sabotage. Beide meinen dasselbe Gleis.', bases: ['fischabfall_entfernung', 'fischkonserven_meth', 'koppra_export'] },
+      { id: 'village_fever', title: 'FIEBER IM DORF', trigger: 'Macang brauchen Wasser und Medizin, bevor die nächste Schicht beginnt.', voice: 'Diesmal geht es nicht um Govaarts Fracht, sondern um Leute mit Namen.', bases: ['wasser_labor', 'frischefisch_frost'] },
+      { id: 'hidden_weapons', title: 'KISTEN OHNE ETIKETT', trigger: 'Govaarts Leute verladen Kisten, deren Inhalt niemand laut nennen soll.', voice: 'Der Wagen ist geschlossen. Die Absicht ist es nicht.', bases: ['govaart_salon', 'altblech_dosen', 'wachen_verlegung'] }
+    ];
+
+    function getStoryBeatsForBase(baseId) {
+      return STORY_BEATS.filter(story => story.bases.includes(baseId));
+    }
+
+    const ATMOSPHERIC_TITLES = {
+      koppra_export: 'SALZ AUF DEN SCHIENEN',
+      govaart_salon: 'DER ROSTIGE VIP',
+      saeure_stollen: 'SÄURE IM REGEN',
+      fischkonserven_meth: 'DOSEN, DIE NIEMAND FRAGEN SOLL',
+      kokosoel_lieferung: 'ÖL FÜR DIE NACHTSCHICHT',
+      abwasser_entsorgung: 'DIE SÜD-MOLE STINKT',
+      altblech_dosen: 'BLECH GEGEN HUNGER',
+      wasser_labor: 'WASSER IN DEN BERG',
+      meth_zwischenlager: 'WEISSER STAUB IM DUNKEL',
+      fischabfall_entfernung: 'FISCHBLUT AM KAI',
+      diesel_notfall: 'TREIBSTOFF BEI NACHT',
+      wachen_verlegung: 'STIEFEL IN DEN STOLLEN',
+      frischefisch_frost: 'KALTER FISCH, HEISSE INSEL'
+    };
+
+    const CHARACTER_ICONS = {
+      GOVAART: '♛',
+      HEIDELBERG: '◈',
+      NYOMAN: '🥥',
+      WAYAN: '🐟',
+      'MACAN GARDE': '☠',
+      MACANG: '△',
+      'BÜRGERMEISTER WASHINGTON': '🎖',
+      'MA\'AN': '⚔',
+      WOKONG: '🔫',
+      'MA\'COCO': '🥥',
+      'MISS ADELAIDE': '⚓'
+    };
+
+    const MOTIVATIONAL_LINES = [
+      'Sauber gefahren. Die Insel hat es gesehen und ausnahmsweise nichts dagegen.',
+      'Der Wagen steht, die Strecke lebt. Genau so verdient man sich die nächste Schicht.',
+      'Gute Arbeit. Kein Drama, kein Heldentum, nur Stahl an der richtigen Stelle.',
+      'Das war Rangierarbeit mit Rückgrat. Der nächste Auftrag wartet schon.',
+      'Pünktlich und ohne Theater. Fast könnte man meinen, diese Bahn wäre professionell.'
+    ];
+
+    function getWagonUseKey(scenario) {
+      const cargo = scenario.cargoName.toLowerCase();
+      if (cargo.includes('fisch') || cargo.includes('meth')) return 'Kühlfracht';
+      if (cargo.includes('säure') || cargo.includes('chem') || cargo.includes('diesel') || cargo.includes('öl')) return 'Tank';
+      if (cargo.includes('wach') || cargo.includes('salon') || cargo.includes('personen')) return 'Personen';
+      if (cargo.includes('blech') || cargo.includes('kisten') || cargo.includes('konserven')) return 'Stückgut';
+      if (cargo.includes('abfall')) return 'Schüttgut und Großwaren';
+      return 'Stückgut';
+    }
+
+    function getSuitableWagons(scenario) {
+      const useKey = getWagonUseKey(scenario);
+      const suitable = WAGONS.filter(wagon => (wagon.uses || []).includes(useKey));
+      const preferred = getWagon(scenario.wagonId);
+      if (preferred && !suitable.some(wagon => wagon.id === preferred.id)) suitable.unshift(preferred);
+      return suitable;
+    }
+
+    function hasPressure(base, pressure) {
+      return base.pressures.includes(pressure);
+    }
+
+    function isScenarioAllowed(base, env, mode) {
+      const targetTrack = getTrack(base.targetTrackId);
+      const startTrack = getTrack(base.startTrackId);
+      if (!targetTrack || !startTrack || targetTrack.cap === 0 || base.startTrackId === base.targetTrackId) return false;
+
+      if (mode.id === 'silent' && (hasPressure(base, 'produktion') || hasPressure(base, 'arbeitsdruck'))) return false;
+      if (env.id === 'heatwave' && hasPressure(base, 'generator')) return false;
+      if (env.id === 'solarfall' && (hasPressure(base, 'kühlkette') || hasPressure(base, 'notfall'))) return false;
+      if (env.id === 'hafenblock' && base.targetTrackId === 'oshira_kueche') return false;
+      if (env.id === 'garbage' && (hasPressure(base, 'chemie') || hasPressure(base, 'wasserknappheit'))) return false;
+      if (env.id === 'rebellion' && hasPressure(base, 'tarnung') && mode.id === 'clean') return false;
+      return true;
+    }
+
+    function buildScenarioVariant(base, tone, env, priority, mode, story, index) {
+      const targetTrack = getTrack(base.targetTrackId);
+      const startTrack = getTrack(base.startTrackId);
+      const toneTag = tone.tag;
+      const envLabel = env.label;
+      const scenarioId = Number(index);
+
+      const quote = `${base.character.quote} ${getCharacterLine(base, tone, mode)}`;
+      const subtext = `${base.character.subtext} ${story.trigger} ${env.trigger}`;
+      const condition = `${base.condition} ${story.voice} ${priority.urgency} ${env.risk}`;
+      const title = story.title;
+
+      const scenario = {
+        id: scenarioId,
+        code: `${base.code}-${priority.id.slice(0, 1).toUpperCase()}${mode.id.slice(0, 1).toUpperCase()}`,
+        title,
+        cargoCode: base.cargoCode,
+        cargoName: base.cargoName,
+        wagonId: base.wagonId,
+        wagonOptions: [],
+        startTrackId: base.startTrackId,
+        targetTrackId: base.targetTrackId,
+        character: {
+          ...base.character,
+          quote,
+          subtext
+        },
+        condition,
+        atmosphere: `${tone.atmosphere} ${env.trigger}`,
+        envLabel,
+        toneTag,
+        priorityId: priority.id,
+        priorityLabel: priority.label,
+        operationMode: mode.label,
+        environmentLabel: envLabel,
+        storyId: story.id,
+        storyTitle: story.title,
+        narrativeLayer: `${priority.label} / ${mode.label} / ${envLabel}`,
+        route: `${startTrack ? startTrack.name : 'Unbekannt'} → ${targetTrack ? targetTrack.name : 'Unbekannt'}`,
+        pressure: base.pressures.join(' / '),
+        selectionWeight: priority.weight * mode.weight * (env.weight || 1),
+        priorityScore: priority.score + mode.score,
+        baseId: base.id,
+        environmentId: env.id,
+        generated: true
+      };
+
+      return scenario;
+    }
+
+    function generateScenarioPool() {
+      const pool = [];
+      SCENARIO_BASES.forEach((base, baseIndex) => {
+        SCENARIO_TONES.forEach((tone, toneIndex) => {
+          getStoryBeatsForBase(base.id).forEach((story, storyIndex) => {
+            PRIORITY_PROFILES.forEach(priority => {
+              OPERATION_MODES.forEach(mode => {
+                ENVIRONMENT_OVERLAYS.forEach((env, envIndex) => {
+                  if (!isScenarioAllowed(base, env, mode)) return;
+                  if ((baseIndex + toneIndex + storyIndex + envIndex + priority.score) % 3 === 0 && priority.id === 'routine') return;
+                  pool.push(buildScenarioVariant(base, tone, env, priority, mode, story, pool.length + 1));
+                });
+              });
+            });
+          });
+        });
+      });
+      return pool;
+    }
+
+    const SCENARIOS = generateScenarioPool();
 
     // 4. GLOBAL STATE
     let state = {
       activeScenarioId: 1,
       wagonPositions: { ...DEFAULT_WAGON_POSITIONS },
-      tapSelectedWagonId: null
+      tapSelectedWagonId: null,
+      assignmentMode: 'memory',
+      activeWagonId: null,
+      taskSnapshotScenarioId: null,
+      taskSnapshotPositions: {},
+      sessionInitialized: false,
+      recentScenarioIds: [],
+      recentBaseIds: [],
+      recentEnvironmentIds: []
     };
 
     // Load from LocalStorage
@@ -667,7 +1106,20 @@
         try {
           const parsed = JSON.parse(saved);
           if (parsed.wagonPositions) state.wagonPositions = parsed.wagonPositions;
-          if (parsed.activeScenarioId) state.activeScenarioId = parsed.activeScenarioId;
+          if (parsed.assignmentMode === 'pull' || parsed.assignmentMode === 'memory') state.assignmentMode = parsed.assignmentMode;
+          if (parsed.activeWagonId) state.activeWagonId = parsed.activeWagonId;
+          state.taskSnapshotScenarioId = parsed.taskSnapshotScenarioId || null;
+          state.taskSnapshotPositions = parsed.taskSnapshotPositions || {};
+          state.sessionInitialized = parsed.sessionInitialized === true;
+          if (parsed.activeScenarioId !== undefined && parsed.activeScenarioId !== null) {
+            const nextId = Number(parsed.activeScenarioId);
+            if (!Number.isNaN(nextId) && SCENARIOS.some(s => s.id === nextId)) {
+              state.activeScenarioId = nextId;
+            }
+          }
+          state.recentScenarioIds = Array.isArray(parsed.recentScenarioIds) ? parsed.recentScenarioIds.map(Number).filter(Number.isFinite).slice(-12) : [];
+          state.recentBaseIds = Array.isArray(parsed.recentBaseIds) ? parsed.recentBaseIds.slice(-6) : [];
+          state.recentEnvironmentIds = Array.isArray(parsed.recentEnvironmentIds) ? parsed.recentEnvironmentIds.slice(-6) : [];
         } catch(e) {
           console.error("Fehler beim Laden des Speicherstands", e);
         }
@@ -685,29 +1137,75 @@
       return WAGONS.filter(w => state.wagonPositions[w.id] === trackId);
     }
 
+    function getActiveWagon(scenario) {
+      const options = getSuitableWagons(scenario);
+      const saved = options.find(wagon => wagon.id === state.activeWagonId);
+      const preferred = options.find(wagon => wagon.id === scenario.wagonId);
+      const movable = options.find(wagon => state.wagonPositions[wagon.id] !== scenario.targetTrackId);
+      const active = saved || preferred || movable || options[0] || getWagon(scenario.wagonId);
+      state.activeWagonId = active ? active.id : null;
+      return active;
+    }
+
+    function captureTaskSnapshot(scenario) {
+      if (state.taskSnapshotScenarioId === scenario.id) return;
+      state.taskSnapshotScenarioId = scenario.id;
+      state.taskSnapshotPositions = Object.fromEntries(getSuitableWagons(scenario).map(wagon => [wagon.id, state.wagonPositions[wagon.id]]));
+      saveState();
+    }
+
+    function setAssignmentMode(mode) {
+      state.assignmentMode = mode === 'pull' ? 'pull' : 'memory';
+      state.activeWagonId = null;
+      state.taskSnapshotScenarioId = null;
+      state.taskSnapshotPositions = {};
+      saveState();
+      syncModeButtons();
+      renderActiveTask();
+      showToast(state.assignmentMode === 'pull' ? 'PULL: Ziel und geeigneter Wagen zählen, der Herkunftsort ist frei.' : 'GEDÄCHTNIS: Jeder Auftrag berücksichtigt die aktuelle Wagenaufstellung.', 'info');
+    }
+
+    function syncModeButtons() {
+      document.getElementById('mode-memory').className = state.assignmentMode === 'memory' ? 'px-2 py-1 rounded bg-macan-accent text-black font-bold' : 'px-2 py-1 rounded text-slate-400 hover:text-white';
+      document.getElementById('mode-pull').className = state.assignmentMode === 'pull' ? 'px-2 py-1 rounded bg-macan-gold text-black font-bold' : 'px-2 py-1 rounded text-slate-400 hover:text-white';
+    }
+
+    function selectActiveWagon(wagonId) {
+      const scenario = SCENARIOS.find(s => s.id === state.activeScenarioId);
+      if (!scenario || !getSuitableWagons(scenario).some(wagon => wagon.id === wagonId)) return;
+      state.activeWagonId = wagonId;
+      saveState();
+      renderActiveTask();
+    }
+
     // MAIN TASK DISPATCHER RENDERER
     function renderActiveTask() {
-      const scenario = SCENARIOS.find(s => s.id === state.activeScenarioId) || SCENARIOS[0];
-      const targetWagon = getWagon(scenario.wagonId);
+      let scenario = SCENARIOS.find(s => s.id === state.activeScenarioId) || SCENARIOS[0];
+      captureTaskSnapshot(scenario);
+      const targetWagon = getActiveWagon(scenario);
       const currentWagonTrackId = state.wagonPositions[targetWagon.id];
       const currentWagonTrack = getTrack(currentWagonTrackId);
       const targetTrack = getTrack(scenario.targetTrackId);
+      const wagonOptions = getSuitableWagons(scenario);
 
       // Meta Elements
       document.getElementById('task-id-badge').innerText = `AUFTRAG ${scenario.code}`;
       document.getElementById('task-cargo-code').innerText = scenario.cargoCode;
       document.getElementById('task-title').innerText = scenario.title;
+      document.getElementById('task-status-badge').innerText = state.assignmentMode === 'pull' ? 'MODUS: PULL' : 'MODUS: GEDÄCHTNIS';
       document.getElementById('character-avatar').innerText = scenario.character.avatar;
       document.getElementById('character-name').innerText = scenario.character.name;
       document.getElementById('character-role').innerText = scenario.character.role;
+      document.getElementById('character-avatar').innerText = CHARACTER_ICONS[scenario.character.name] || '•';
       document.getElementById('lore-quote').innerText = scenario.character.quote;
       document.getElementById('lore-subtext').innerText = scenario.character.subtext;
 
-      document.getElementById('meta-start-track').innerText = currentWagonTrack.name.toUpperCase();
+      document.getElementById('meta-start-track').innerText = state.assignmentMode === 'pull' ? 'HERKUNFT FREI' : currentWagonTrack.name.toUpperCase();
       document.getElementById('meta-target-track').innerText = targetTrack.name.toUpperCase();
       document.getElementById('meta-cargo').innerText = scenario.cargoName;
-      document.getElementById('meta-wagon').innerText = targetWagon.name;
-      document.getElementById('meta-condition').innerText = scenario.condition;
+      document.getElementById('meta-wagon').innerText = state.assignmentMode === 'pull'
+        ? 'GEEIGNETER WAGEN NACH WAHL'
+        : `${targetWagon.name} (${targetWagon.code})`;
 
       // PRÜFUNG DER ZIELGLEIS-KAPAZITÄT & RÄUMUNGSSCHRITT
       const wagonsOnTarget = getWagonsOnTrack(targetTrack.id);
@@ -716,6 +1214,32 @@
       const alertPanel = document.getElementById('evacuation-alert-panel');
       const stepsContainer = document.getElementById('shunt-steps-list');
       stepsContainer.innerHTML = '';
+
+      const wagonChoiceHtml = `
+        <div class="mb-3 rounded border border-macan-accent/40 bg-macan-accent/5 p-3 font-mono text-xs">
+          <div class="mb-2 flex items-center justify-between">
+            <span class="font-bold text-macan-accent">WAGGON WÄHLEN</span>
+            <span class="text-[10px] text-slate-400">Primärnutzung oder TSV-kompatible Alternative</span>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            ${state.assignmentMode === 'pull'
+              ? wagonOptions.map(wagon => `
+                <span class="wagon-choice flex items-center gap-2 rounded border px-2 py-1.5" style="--wagon-color: ${wagon.color}; --wagon-text: ${wagon.textColor}">
+                  <span>${wagon.name} (${wagon.code})</span>
+                </span>
+              `).join('')
+              : wagonOptions.map(wagon => `
+                <button onclick="selectActiveWagon('${wagon.id}')" class="wagon-choice flex items-center gap-2 rounded border px-2 py-1.5 ${wagon.id === targetWagon.id ? 'ring-2 ring-macan-accent' : 'hover:brightness-110'}" style="--wagon-color: ${wagon.color}; --wagon-text: ${wagon.textColor}">
+                  <span>${wagon.name} (${wagon.code})</span>
+                </button>
+              `).join('')}
+          </div>
+          <div class="mt-2 border-t border-macan-border/60 pt-2 text-[11px] leading-snug text-slate-300">
+            <span class="font-bold uppercase text-macan-gold">Auflage:</span> ${scenario.condition}
+          </div>
+        </div>
+      `;
+      stepsContainer.insertAdjacentHTML('beforeend', wagonChoiceHtml);
 
       let stepCounter = 1;
 
@@ -746,19 +1270,21 @@
         alertPanel.classList.add('hidden');
       }
 
-      // Standard-Schritte des Transports
+      // Ein Auftrag bewegt genau einen Wagen. Der Verband bleibt damit im Modellbahnrahmen.
       const steps = [
         {
-          title: `Waggon übernehmen & Verband zusammenstellen`,
-          desc: `Hole Waggon <strong class="text-macan-accent">${targetWagon.name} (${targetWagon.code})</strong> vom aktuellen Standort <strong class="text-slate-200">${currentWagonTrack.name}</strong>.`
+          title: `Einzelwagen übernehmen`,
+          desc: state.assignmentMode === 'pull'
+            ? `Nimm einen geeigneten Wagen aus der Auswahl. Der Herkunftsort und die konkrete Wahl bleiben dir überlassen.`
+            : `Hole exakt <strong class="text-macan-accent">${targetWagon.name} (${targetWagon.code})</strong> von <strong class="text-slate-200">${currentWagonTrack.name}</strong>.`
         },
         {
-          title: `Hauptfahrt & Beladung / Rangierung`,
-          desc: `Fahre den Zugverband nach <strong class="text-macan-accent">${targetTrack.name}</strong> und führe die Ladetätigkeit für <strong>${scenario.cargoName}</strong> durch.`
+          title: `Rangierfahrt & Zustellung`,
+          desc: `Fahre den Einzelwagen nach <strong class="text-macan-accent">${targetTrack.name}</strong>. Lade oder übergib <strong>${scenario.cargoName}</strong> dort an die zuständige Stelle.`
         },
         {
-          title: `Ziel-Sicherung & Entladung`,
-          desc: `Stelle den Waggon an <strong class="text-macan-accent">${targetTrack.name}</strong> ab, sichere die Handbremsen und melde Vollzug an ${scenario.character.name}.`
+          title: `Kuppeln, sichern, melden`,
+          desc: `Kupplung lösen, Wagen am Zielgleis an die Ladestelle setzen, Handbremse anziehen und den Auftrag erst danach abschließen.`
         }
       ];
 
@@ -861,7 +1387,7 @@
         }
 
         const trackBoxHtml = `
-          <div class="track-dropzone border-2 ${borderClass} rounded-lg p-3 flex flex-col justify-between transition min-h-[160px]"
+          <div class="track-dropzone border ${borderClass} rounded p-2 flex flex-col justify-between transition min-h-[108px]"
                ondragover="handleDragOver(event, '${track.id}')"
                ondragleave="handleDragLeave(event)"
                ondrop="handleDrop(event, '${track.id}')"
@@ -871,8 +1397,8 @@
                 <h4 class="font-mono text-xs font-bold ${isDisabled ? 'text-macan-alert' : 'text-macan-accent'}">${track.name}</h4>
                 <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-macan-card text-slate-300 font-bold">${statusText}</span>
               </div>
-              <p class="text-[10px] text-slate-400 mb-2 font-mono">${track.desc}</p>
-              <div class="space-y-1.5">
+              <p class="text-[9px] text-slate-400 mb-1 font-mono truncate">${track.desc}</p>
+              <div class="space-y-1">
                 ${wagonCardsHtml}
               </div>
             </div>
@@ -1024,20 +1550,115 @@
     }
 
     function selectScenario(id) {
-      state.activeScenarioId = id;
+      const scenario = SCENARIOS.find(s => s.id === Number(id));
+      if (!scenario) return;
+
+      state.activeScenarioId = scenario.id;
+      state.activeWagonId = null;
+      state.taskSnapshotScenarioId = null;
+      state.taskSnapshotPositions = {};
+      state.recentScenarioIds = [...state.recentScenarioIds.filter(recentId => recentId !== scenario.id), scenario.id].slice(-12);
+      state.recentBaseIds = [...state.recentBaseIds.filter(baseId => baseId !== scenario.baseId), scenario.baseId].slice(-6);
+      state.recentEnvironmentIds = [...state.recentEnvironmentIds.filter(environmentId => environmentId !== scenario.environmentId), scenario.environmentId].slice(-6);
       saveState();
       renderActiveTask();
       closeScenarioModal();
-      showToast(`Auftrag #${SCENARIOS.find(s => s.id === id).code} aktiviert.`, 'info');
+      showToast(`Auftrag #${scenario.code} aktiviert.`, 'info');
+    }
+
+    function getScenarioSelectionScore(scenario) {
+      const targetTrack = getTrack(scenario.targetTrackId);
+      const wagon = getWagon(scenario.wagonId);
+      const currentTrackId = wagon ? state.wagonPositions[wagon.id] : null;
+      if (state.assignmentMode === 'memory' && currentTrackId === scenario.targetTrackId) return 0;
+      const occupied = targetTrack ? getWagonsOnTrack(targetTrack.id).length : 0;
+      const capacityPressure = targetTrack && targetTrack.cap > 0 ? occupied / targetTrack.cap : 0;
+      const recentScenarioPenalty = state.recentScenarioIds.includes(scenario.id) ? 0.03 : 1;
+      const recentBasePenalty = state.recentBaseIds.includes(scenario.baseId) ? 0.28 : 1;
+      const recentEnvironmentPenalty = state.recentEnvironmentIds.includes(scenario.environmentId) ? 0.55 : 1;
+      const pressureBonus = 1 + capacityPressure * 0.55;
+      return Math.max(0.01, scenario.selectionWeight * (1 + scenario.priorityScore * 0.08) * pressureBonus * recentScenarioPenalty * recentBasePenalty * recentEnvironmentPenalty);
     }
 
     function generateRandomTask() {
-      let nextId;
-      do {
-        nextId = Math.floor(Math.random() * SCENARIOS.length) + 1;
-      } while (nextId === state.activeScenarioId && SCENARIOS.length > 1);
+      const rankedCandidates = SCENARIOS
+        .filter(scenario => scenario.id !== state.activeScenarioId && getScenarioSelectionScore(scenario) > 0)
+        .map(scenario => ({ scenario, score: getScenarioSelectionScore(scenario) }))
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 36);
 
-      selectScenario(nextId);
+      const totalScore = rankedCandidates.reduce((sum, candidate) => sum + candidate.score, 0);
+      let cursor = Math.random() * totalScore;
+      const selected = rankedCandidates.find(candidate => {
+        cursor -= candidate.score;
+        return cursor <= 0;
+      }) || rankedCandidates[0];
+
+      if (selected) selectScenario(selected.scenario.id);
+    }
+
+    function completeActiveTask() {
+      const scenario = SCENARIOS.find(s => s.id === state.activeScenarioId);
+      const targetTrack = getTrack(scenario.targetTrackId);
+      const suitableWagons = getSuitableWagons(scenario);
+      const newlyDelivered = suitableWagons.find(wagon =>
+        state.wagonPositions[wagon.id] === targetTrack.id &&
+        state.taskSnapshotPositions[wagon.id] !== targetTrack.id
+      );
+      const wagon = state.assignmentMode === 'pull' ? newlyDelivered : getActiveWagon(scenario);
+      const currentTrack = wagon ? getTrack(state.wagonPositions[wagon.id]) : null;
+      const completed = state.assignmentMode === 'pull'
+        ? Boolean(newlyDelivered)
+        : Boolean(wagon && currentTrack && currentTrack.id === targetTrack.id && state.taskSnapshotPositions[wagon.id] !== targetTrack.id);
+
+      if (completed) {
+        state.lastOutcome = 'success';
+        state.lastCompletedScenarioId = scenario.id;
+        saveState();
+        document.getElementById('completion-icon').innerText = '★';
+        document.getElementById('completion-icon').className = 'text-4xl leading-none text-macan-green';
+        document.getElementById('completion-title').innerText = 'AUFTRAG SAUBER ABGESCHLOSSEN';
+        document.getElementById('completion-title').className = 'font-mono text-base font-bold text-macan-green uppercase';
+        document.getElementById('completion-result').innerText = MOTIVATIONAL_LINES[Math.floor(Math.random() * MOTIVATIONAL_LINES.length)];
+        document.getElementById('completion-reward').innerText = 'BELOHNUNG · PRIORITÄT +1 · VERTRAUEN GEWONNEN';
+        document.getElementById('completion-comment').innerText = `${scenario.character.name}: ${getCompletionComment(scenario.character.name, true)}`;
+      } else {
+        state.lastOutcome = 'penalty';
+        saveState();
+        document.getElementById('completion-icon').innerText = '×';
+        document.getElementById('completion-icon').className = 'text-5xl leading-none text-macan-alert';
+        document.getElementById('completion-title').innerText = 'AUFTRAG NICHT ERFÜLLT';
+        document.getElementById('completion-title').className = 'font-mono text-base font-bold text-macan-alert uppercase';
+        document.getElementById('completion-reward').innerText = 'STRAFE · PRIORITÄT VERLOREN · NOCH EINMAL RANGIEREN';
+        document.getElementById('completion-result').innerText = state.assignmentMode === 'pull'
+          ? `Noch kein geeigneter Wagen wurde neu nach ${targetTrack.name} gebracht. Deine Wahl bleibt frei, aber das Ziel nicht.`
+          : `Der ${wagon ? wagon.name : 'beauftragte Wagen'} steht noch auf ${currentTrack ? currentTrack.name : 'einem unbekannten Gleis'} statt auf ${targetTrack.name}.`;
+        document.getElementById('completion-comment').innerText = `${scenario.character.name}: ${getCompletionComment(scenario.character.name, false)}`;
+      }
+
+      document.getElementById('completion-modal').classList.remove('hidden');
+    }
+
+    function getCompletionComment(characterName, success) {
+      const comments = {
+        'MISS ADELAIDE': success ? 'Na bitte. Kein Waggon im Hafenbecken, und kein Kerl musste seine Wichtigkeit beweisen.' : 'Das war kein Rangieren, das war dekoratives Herumstehen. Noch einmal, aber diesmal mit Gleis unter dem Wagen.',
+        'GOVAART': success ? 'Endlich jemand, der einen Wagen bewegen kann, ohne dabei um Erlaubnis zu betteln.' : 'Mein Wagen steht falsch. Deine Ausrede darf sich gern daneben stellen.',
+        'HEIDELBERG': success ? 'Präzise genug. Das Labor bekommt, was es braucht.' : 'Der Prozess wartet nicht auf deine Unsicherheit.',
+        'WAYAN': success ? 'Gut. Die Fabrik läuft weiter, und niemand musste deine Rangierkunst erklären.' : 'Die Produktion steht. Das ist jetzt dein Problem.',
+        'NYOMAN': success ? 'Danke. Die Arbeiter können weiterarbeiten.' : 'Wir brauchen Verlässlichkeit, keine neuen Schwierigkeiten.',
+        'BÜRGERMEISTER WASHINGTON': success ? 'Das war ein seltener guter Tag für die Verwaltung.' : 'Ich muss das erklären, und ich habe dafür wirklich keine Zeit.',
+        'WOKONG & MA\'AN': success ? 'Heute Nacht bleibt die Strecke still. Das reicht.' : 'Die Insel merkt sich, wer sie im Stich lässt.'
+      };
+      return comments[characterName] || (success ? 'Der Auftrag ist angekommen.' : 'Der Auftrag steht noch aus.');
+    }
+
+    function closeCompletionModal() {
+      document.getElementById('completion-modal').classList.add('hidden');
+    }
+
+    function continueFromCompletion() {
+      closeCompletionModal();
+      generateRandomTask();
     }
 
     // MODAL CONTROL
@@ -1090,7 +1711,14 @@
     // INITIALIZATION
     window.addEventListener('DOMContentLoaded', () => {
       loadState();
+      if (!state.sessionInitialized) {
+        state.sessionInitialized = true;
+        state.wagonPositions = { ...DEFAULT_WAGON_POSITIONS };
+        saveState();
+      }
+      syncModeButtons();
       renderActiveTask();
+      showToast('Startaufstellung geladen. Die Wagenlage wird ab jetzt im Gedächtnis gespeichert.', 'info');
     });
   </script>
 </body>

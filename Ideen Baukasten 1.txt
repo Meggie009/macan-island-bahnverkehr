@@ -1,0 +1,347 @@
+Hier ist das tiefgehende, erweiterte **Worldbuilding- und Logistik-Konzept für Macan Island**, das die Insel-Ökonomie realistisch, abwechslungsreich und absolut konsistent auf die physische Modellbahn überträgt.
+
+---
+
+### 1. Grund-Korrekturen & Logik-Schärfung
+
+* **Kokos-Ökonomie statt Palmöl:** Baraki Palms ist eine traditionelle und industrielle Kokos-Plantage (Frisch-Nüsse, Kopra-Trocknung, Speiseöl-Pressung, Nussfasern für Dämmung/Brennmaterial).
+* **Meth-Tarnungs-Regel (Meth = Fisch-Tarnung):** Kristallines Meth (`F9`) wird *niemals* offen oder als isolierter Einzeltransport deklariert. Es wird aus dem Oshira-Labor geheim nach Kalanga Fishworks geschmuggelt und dort **in den Fischkonserven- und Kühlwagen (z. B. `Alpen-Kasten` oder `Frost-Festung`) zwischen den Fischkisten versteckt**, um bei Grenzkontrollen im Hafen als muffige Fischfracht getarnt zu werden.
+* **Keine Quatsch-Kombinationen:** Personenwagen dienen ausschließlich dem Transport von Menschen (Arbeiter, Wachen, Besuchergruppen, Verwundete, Inspektoren) und niemals als "Ablenkung für Säuretransporte".
+* **Mischzüge (Maximal 2 Waggons, selten):** Maximale Länge bei Kombinationen ist 2 Waggons (z. B. 1x Kühlwagen + 1x Personenwagen oder 1x Kesselwagen + 1x Niederbord).
+
+---
+
+### 2. Bedürfniskatalog & Auslöser-Matrix
+
+#### A. Die 4 Produktionsstätten & Logistik-Hubs (Je 20+ Bedarfe & Güterflüsse)
+
+##### 1. Kalanga Fishworks (Fischverarbeitung & Konservenfabrik)
+
+* **Regelmäßige Rohstoffe:** Frischfisch (`F1`), Speiseöl (`F5`), leere Konservendosen/Blech.
+* **Betriebsstoffe:** Reinigungsmittel/Säure (`F13`), Eis für Kühlung, Schmiermittel für Bandstraßen.
+* **Fertigwaren-Export:** Fischkonserven (`F2`), Fischabfälle (`F3`), getarnte Meth-Ladungen (`F9`).
+* **Seltene / Industrielle Bedarfe:**
+1. *Maschinenschaden:* Neue Verdichter-Pumpe für die Ammoniak-Kühlanlage aus dem Hafen.
+2. *Dosen-Mangel:* Altblech/Sammelblech von den Bewohnern in Port Varan zum Einschmelzen.
+3. *Instandhaltung:* Wellblech-Platten & Zement zur Reparatur des salzwasser-zerfressenen Hallendachs.
+4. *Spülanforderung (Sehr selten):* Reinigung des Kessels nach Nutzung mit giftigen Rückständen.
+5. *Verpackungsmaterial:* Nachschub an Holzsteigen und Umreifungsbändern aus Baraki Palms.
+6. *Arbeiter-Krise:* Frischwasser-Tanks bei Ausfall der Trinkwasserleitung.
+7. *Havarie-Räumung:* Abtransport von stinkendem Bauschutt nach einem Kesselexplosion.
+8. *Streik-Schlichtung:* Sonderrationen Reis & Rum zur Beruhigung der Belegschaft.
+9. *Strom-Notfall:* Diesel-Beistellung für die Fischwerk-Notaggregate.
+10. *Qualitäts-Audit:* Beistellung eines sauberen Begleitwagens für den Hygienebeauftragten.
+
+
+
+##### 2. Baraki Palms (Kokos-Kooperative & Ölmühlen)
+
+* **Regelmäßige Rohstoffe:** Frisch-Kokosnüsse (`F4`), Diesel (`F11`) für Ölmühlen.
+* **Betriebsstoffe:** Brennholz & Nussfasern (`F7`) für Kopra-Trockenöfen, Press-Hexenschmierung.
+* **Fertigwaren-Export:** Speiseöl (`F5`), Kopra-Kuchen (`F6`), Matten/Fasern.
+* **Seltene / Industrielle Bedarfe:**
+1. *Ersatzteile:* Neue Schneckenpresse für die Haupt-Ölmühle.
+2. *Ernte-Schwemme:* Zusätzliche Holz-Kisten (`Kisten Kasten`) bei Rekordernte.
+3. *Unwetter-Schaden:* Sägewerk-Musterbretter zur Abstützung umgestürzter Trockenschuppen.
+4. *Arbeiter-Überlastung:* Sanitäts-Beistellung & Verpflegungskisten bei Hitzewelle.
+5. *Feuerwehr-Einsatz:* Löschwasser-Tankwagen nach Ofen-Sprossbrand.
+6. *Säure-Bedarf:* Ph-Neutralisierer für die Speiseöl-Laffinetur.
+7. *Export-Stau:* Gedeckte Waggons zur witterungsgeschützten Zwischenlagerung von Kopra.
+8. *Rattenplage:* Schädlingsbekämpfungsmittel & Reinigungsset aus Port Varan.
+9. *Plantagen-Werkzeug:* Nachschub an Macheten, Pflückstangen & Jutesäcken.
+10. *Sicherheits-Bedarf:* Begleitwagen für die Gang nach Raubüberfällen an der Plantagengrenze.
+
+
+
+##### 3. Oshira Stollen (Geheim-Labor & Bunkersystem)
+
+* **Regelmäßige Rohstoffe:** Roh-Chemikalien & Methanol (`F8`), Bunker-Diesel (`F12`).
+* **Betriebsstoffe:** Säuren, Spezial-Glaskolben, Filtereinsätze für Entlüftung.
+* **Abfall & Schmuggel:** Labor-Abwasser (`F10`), kristallines Meth (`F9` - zur Tarnung nach Kalanga).
+* **Seltene / Industrielle Bedarfe:**
+1. *Netzausfall:* Schweröl/Bunker-Diesel für die schweren Schiffsdiesel-Generatoren im Stollen.
+2. *Reaktor-Überhitzung:* Eis-Kühlwagen (`Frost-Festung`) zur Notkühlung der Synthese-Behälter.
+3. *Sicherheits-Sperre:* Sprengstoff & Zement zum Zumauern alter Stollen-Auszweigung.
+4. *Spionageschutz:* Verdeckte Beistellung eines geschlossenen Waggons bei Hubschrauber-Sichtungen.
+5. *Gefahrgut-Leck:* Spezielle Korrosions-Bindemittel aus dem Hafen.
+6. *Labor-Erweiterung:* Edelstahl-Rohre und Druckventile für zweite Kochstraße.
+7. *Wachen-Verlegung:* Mannschaftstransport im Personenwagen bei Drohungen der Rebellen.
+8. *Bunker-Verpflegung:* Haltbare Konserven & Medizin für das unterirdische Labor-Team.
+9. *Abluft-Reinigung:* Neue Aktivkohle-Filterpellets aus Port Varan.
+10. *Trümmer-Abtransport:* Gesteins-Niederbordwagen nach Einsturz eines Nebenstollens.
+
+
+
+##### 4. Port Varan (Hafen, Kai & Verwaltungssitz)
+
+* **Importe:** Treibstoff (`F11/F12`), Chemikalien (`F8`), Reiniger (`F13`), Maschinen, Baustoffe.
+* **Exporte:** Konserven (`F2`), Speiseöl (`F5`), Kopra (`F6`), Meth (getarnt).
+* **Seltene / Industrielle Bedarfe:**
+1. *Hafen-Kollaps:* Eilige Räumung der Kai-Gleise bei Ankunft von 3 Trawlern gleichzeitig.
+2. *Sturm-Sicherung:* Abtransport sturmgefährdeter Güter ins Inselinnere.
+3. *Kai-Sanierung:* Zement & Eisenbahnschwellen zur Ausbesserung mürber Kaimauern.
+4. *Trinkwasser-Mangel:* Süßwasser-Tankwagen für vor Reede liegende Frachter.
+5. *Zoll-Razzia:* Verdeckte Umlagerung sensibler Frachten auf Abstellgleise.
+6. *Siedler-Versorgung:* Notfall-Reis & Dosenfisch für verarmte Hafenbewohner.
+7. *Treibstoff-Lagervoll:* Eil-Abpumpen von Benzin in Kesselwagen Richtung Baraki.
+8. *Reparatur-Kran:* Schwerlast-Ersatzteile für den alten Dampfkran an der Kaimauer.
+9. *Seuchen-Quarantäne:* Verlegung eines Sanitäts-Personenwagens an die Pier.
+10. *Müll-Räumung:* Abtransport von Hafen-Schrott & Fischabfällen.
+
+
+
+---
+
+#### B. Die 11 Personen (Je 12+ spezifische Motivations-Treiber)
+
+```
+┌────────────────────────────────────────────────────────────────────────┐
+│                        DIE AKTEURS-BEDÜRFNISSE                         │
+├───────────────────────────────────┬────────────────────────────────────┤
+│ Govaart (Boss)                    │ Heidelberg (Koch)                  │
+│ • Paranoia vor Hauptstadt-Kontroll│ • Strikte Reinheit der Chemikalien │
+│ • Maximierung des Meth-Exports    │ • Angst vor Reaktor-Explosionen    │
+│ • Disziplinierung von Abweichlern │ • Bedarf an Spezial-Glaswaren      │
+├───────────────────────────────────┼────────────────────────────────────┤
+│ Washington (Bürgermeister)        │ Miss Adelaide (Hafenmeisterin)     │
+│ • Vermeidung von Bürger-Aufständen│ • Maximale Auslastung der Pier     │
+│ • Verschleierung von Korruption   │ • Beseitigung von Gleis-Blockaden  │
+│ • Bewirtung von Insel-Besuchern   │ • Spott über Gang-Machtgehabe      │
+└───────────────────────────────────┴────────────────────────────────────┘
+
+```
+
+1. **Govaart (Boss):**
+* Machtdemonstration durch Söldner-Eskorten.
+* Gier nach unauffälligem Meth-Export.
+* Rache an rebellischen Dörfern (Rations-Entzug).
+* Verstecken von Waffenkisten in Güterwagen.
+* Empfang von ausländischen Käufern im Salonierten Personenwagen.
+* Paranoia vor Razzien (Verteilung von Frachten auf Nebenstrecken).
+* Sicherung seiner privaten Rum- und Zigarren-Lieferungen.
+* Bestechung von Zollbeamten durch Gratis-Konserven.
+* Disziplinierung von Wayan bei Lieferverzögerungen.
+* Bau von Befestigungen um seine Villa (Zement-Transport).
+* Verlegung von Truppen bei Gerüchten über Wokong.
+* Beseitigung von Spuren nach "Zwischenfällen".
+
+
+2. **Heidelberg (Koch):**
+* Manischer Drang nach chemischer Reinheit (Säure-Importe).
+* Panik vor Unterbrechung der Kühlkette im Stollen.
+* Entsorgung von ätzendem Labor-Abwasser ohne Zeugen.
+* Nachschub an Präzisions-Messgeräten.
+* Geheimhaltung der Meth-Tarnung in der Fischfabrik.
+* Sicherung der Notstrom-Generatoren (Diesel).
+* Anforderung von Atem-Schutzausrüstung aus dem Hafen.
+* Geheime Medikamenten-Synthese für eigene Zwecke.
+* Angst vor Erpressung durch die Rebellen.
+* Einbau neuer Edelstahl-Kessel im Bunker.
+* Lüftungs-Reinigung nach Chlorgas-Austritt.
+* Abriegelung des Stollens bei Fremden-Ankunft.
+
+
+3. **Nyoman (Kooperative-Chef):**
+* Überleben und Schutz der entkräfteten Nusssammler.
+* Kontinuierliche Speiseöl-Lieferung an Kalanga Fishworks.
+* Instandhaltung der mürben Ölmühlen-Maschinen.
+* Sicherstellung von Trockenfeuer-Holz für die Kopra.
+* Import von Medikamenten gegen Tropenfieber.
+* Schutz der Ernte vor Raub durch die Macan Garde.
+* Beschaffung von Trinkwasser bei Trockenheit.
+* Reparatur eingestürzter Lagerhallen-Dächer.
+* Faire Entlohnung der Arbeiter durch Tauschwaren.
+* Vermeidung von Streiks in den Palmeras.
+* Schutz von Ma'coco vor Übergriffen der Söldner.
+* Organisation von Gemeinschafts-Festen.
+
+
+4. **Wayan (Fishworks-Leiter):**
+* Panische Angst vor Zorn des Bosses bei Fischverderb.
+* Arrogantes Auftreten gegenüber den einfachen Arbeitern.
+* Dringender Mangel an Speiseöl oder Blechdosen.
+* Beseitigung von fliegenverseuchten Fischabfällen.
+* Abwicklung der verdeckten Meth-Einbettung in Konserven.
+* Kühlungssicherung bei brutaler Tropenhitze.
+* Reparatur von Schäden an den Konserven-Fließbändern.
+* Vertuschung von Arbeitsunfällen in der Fabrik.
+* Beschaffung von Räucherfisch-Zutaten für Eigenbedarf.
+* Konfliktmilderung bei Streikdrohungen der Fischer.
+* Desinfektion der Hallen nach Brikett-Verschmutzung.
+* Pünktliche Beistellung von Waggons am Kühlhaus.
+
+
+5. **Macan Garde (Gang):**
+* Bereicherung durch Schutzgelder und Fracht-Abzweigung.
+* Patrouillenfahrten zur Abschreckung von Rebellen.
+* Begleitschutz-Beistellung für sensible Ladungen.
+* Requirierung von Treibstoff & Verpflegung für die Kaserne.
+* Willkürliche Blockade von Gleisen zur Machtdemonstration.
+* Truppenverlegung zwischen Hafen, Stollen und Plantage.
+* Esprit und Trunkenheit (Anforderung von Rum-Kisten).
+* Abfangen von Gütern, die für die Siedler bestimmt sind.
+* Transport von Gefangenen zur Zwangsarbeit im Stollen.
+* Sicherung der eingleisigen Bergstrecke.
+* Ausrauben von Küstenkuttern an Bulan Bay.
+* Durchsetzung von Ausgangssperren.
+
+
+6. **Macang (Inselbewohner):**
+* Überleben der Familien durch Grundnahrungsmittel.
+* Schutz vor der Willkür der Macan Garde.
+* Transport zu den harten Schichten in der Fischfabrik.
+* Sammeln von Altblech & Schrott zum Verkauf an Washington.
+* Notfall-Sanierung der spartanischen Wohnbaracken.
+* Hilferufe bei Ausbruch von Ruhr oder Tropenfieber.
+* Stille Unterstützung der Rebellen um Wokong.
+* Anforderung von Reissaatgut & Fischernetzen.
+* Proteste gegen den Verwesungsgestank der Fischfabrik.
+* Reparatur des dorfeigenen Brunnens.
+* Versorgung von verletzten Arbeitern.
+* Wunsch nach Frieden auf Macan Island.
+
+
+7. **Bürgermeister Washington (Politiker):**
+* Angst vor Absetzung durch die Hauptstadt-Regierung.
+* Schwitzende Bemühung, Aufstände der Siedler zu verhindern.
+* Bewirtung und Führung von ausländischen Insel-Besuchern.
+* Kaschierung der kriminellen Machenschaften des Bosses.
+* Beseitigung von Müll und Gestank nahe seinem Büro.
+* Organisation von Altblech-Sammelaktionen für Dosen.
+* Verteilung minimaler Nahrungsmittel-Rationen.
+* Erhalt der zerfallenden Bürokratie in Port Varan.
+* Geheime Verhandlungen mit Nyoman und den Arbeitern.
+* Anforderung von Reparaturmaterial für das Rathaus.
+* Schutz seiner persönlichen Wohlstands-Güter.
+* Vermeidung von Skandalen vor Journalisten.
+
+
+8. **Ma'an (Rebellin):**
+* Gezielte Guerilla-Nadelstiche gegen Govaarts Güterflüsse.
+* Abfangen von Verpflegungstransporten für die armen Dörfer.
+* Sabotage von Chemikalien-Kesseln der Drogenküche.
+* Verdeckte Evakuierung bedrohter Dorfbewohner.
+* Erpressung von Wayan zur Freigabe von Fischkonserven.
+* Vorbereitung von Gleissperren an der Bergstrecke.
+* Beschaffung von Wundversorgungs-Material & Medizin.
+* Zerstörung von Nachschublinien der Macan Garde.
+* Kontaktaufnahme mit ausländischen Aktivisten/Journalisten.
+* Schutz von Ma'coco und den Nusssammlern.
+* Verstecken von Waffenlagern im Dschungel.
+* Rache für erlittene Grausamkeiten der Gang.
+
+
+9. **Wokong (Rebellen-Chef):**
+* Erbitterter Kampf gegen Govaart (Rache für seinen Bruder).
+* Aufwiegelung der indigenen Arbeiter gegen Ausbeutung.
+* Gezielte Erpressung von Hafenmeisterin Adelaide.
+* Umleitung von Treibstoff-Kesseln (`SHELL`) für Rebellen-Boote.
+* Erzwingung von Hilfslieferungen nach Baraki Palms.
+* Sabotage-Sperren auf der Stollen-Zufahrt.
+* Beschaffung von Werkzeug & Funkgeräten aus dem Hafen.
+* Schutz der Küstenabschnitte vor Govaarts Schmugglern.
+* Bündnis mit Nyoman zur Sicherung der Plantagen.
+* Bereitstellung von Verstecken im Berg Oshira.
+* Störung des Meth-Abtransports.
+* Kampf für eine Zukunft ohne Gang-Terror.
+
+
+10. **Ma'coco (Nusssammler):**
+* Erschöpfungsschutz bei extremen Arbeitsbedingungen.
+* Sorge um das ständige Brennen der Kopra-Trockenöfen.
+* Anforderung von Trinkwasser & Schattenspenden.
+* Wut auf Schikanen der bewaffneten Macan Garde.
+* Interner Holz- & Faser-Rangierdienst in Baraki Palms.
+* Solidarische Streik-Aktionen mit den Fischverarbeitern.
+* Beschaffung von Verbandsmaterial für Schnittverletzungen.
+* Schutz der jüngeren Arbeiter vor Zwangsarbeit.
+* Instandhaltung der Palmen-Steige und Erntewagen.
+* Bitten an Nyoman um Unterstützung gegen die Gang.
+* Feiern nach erfolgreich geschaffter Monatsernte.
+* Weitergabe von Informationen an Ma'an.
+
+
+11. **Miss Adelaide (Hafenmeisterin):**
+* Durchsetzung von Ordnung und Disziplin auf den Pier-Gleisen.
+* Spott über das Getue der bewaffneten Macan Garde.
+* Verhinderung von Gleis-Blockaden bei Schiff-Ankünften.
+* Pünktliche Beladung auslaufender Hochsee-Frachter.
+* Beschaffung von starkem Kaffee & Ersatzteilen für den Krandienst.
+* Abweisung von stinkenden Fischabfall-Waggons am Hauptkai.
+* Einhebung von Hafengebühren bei Govaarts Kontakten.
+* Sicherung des Güterumschlags bei aufziehendem Sturm.
+* Bereitstellung von Anlegeplätzen für Fisch-Trawler.
+* Geheime Hilfestellung für bedrängte Schiffsbesatzungen.
+* Organisation von Kaimauer-Saniermaterial.
+* Bewahrung ihrer Unabhängigkeit auf Macan Island.
+
+
+
+---
+
+### 3. Insel-Besucher (Außenstehende als Story-Katalysatoren)
+
+Um die Tropen-Atmosphäre lebendig zu halten, treffen regelmäßig betriebsfremde Personen per Boot in Port Varan ein, die Verwicklungen auslösen:
+
+```
+┌────────────────────────────────────────────────────────────────────────┐
+│                        AUSSENSTEHENDE BESUCHER                         │
+├───────────────────────────────┬────────────────────────────────────────┤
+│ Westliche Umwelt-Aktivisten   │ BUNDES-AUDITOREN / REGIERUNG          │
+│ • Untersuchen Giftabwasser    │ • Prüfen Infrastruktur & Papiere       │
+│ • Sperren Gleise durch Protest│ • Verlangen Repräsentations-Fahrten    │
+├───────────────────────────────┼────────────────────────────────────────┤
+│ Ausländische Investoren       │ TROPEN-FORSCHER & BOTANIKER            │
+│ • Wollen Ölmühlen aufkaufen   │ • Suchen seltene Pflanzenspezies       │
+│ • Verlangen Luxus-Transporte  │ • Brauchen Proben-Kühlwagen            │
+└───────────────────────────────┴────────────────────────────────────────┘
+
+```
+
+* **Modellbahn-Logik bei Besuchern:**
+* **Inspektoren / Investoren:** Erfordern Beistellung des `Personenwagens` (Mischzug max 2 Wagen: `Personenwagen` + 1x Schutz-/Güterwagen).
+* **Umwelt-Aktivisten:** Blockieren zeitweise Hauptgleise in Port Varan $\rightarrow$ erzwingt Ausweich-Rangieren über Industrie-Gleise.
+* **Forscher:** Benötigen kurzfristig den Kühlwagen (`Frost-Festung`) für empfindliche Dschungel-Proben.
+
+
+
+---
+
+### 4. Die Meth-Tarnungs-Logik (Kopplungs-Regel)
+
+Meth (`F9`) entsteht im *Oshira Stollen*, wird aber **nie direkt im Meth-Kessel offen an den Hafen geliefert**.
+
+* **Schritt 1 (Roh-Schmuggel zum Werk):** Die Reinstware wird in Kisten verpackt im `Alpen-Kasten` oder `Gedeckte Tonne` verdeckt vom Stollen nach *Kalanga Fishworks Nord* rangiert.
+* **Schritt 2 (Fisch-Tarnung & Export):** In der Fischfabrik wird das Meth zwischen die Fischkonserven-Kisten verladen. Der Abtransport an den Hafen nach *Port Varan Nord* erfolgt als regulärer **Fischkonserven-Transport (`F2`)** im `Alpen-Kasten` oder `Frost-Festung`.
+* **Ergebnis:** Auf dem Papier und im Befehl lautet die Fracht "Fischkonserven", aber im Fließtext-O-Ton lässt Heidelberg oder der Boss durchblicken, was wirklich unter den Fischen liegt!
+
+---
+
+### 5. Das Regel- & Filter-System (Keine Mismatches mehr!)
+
+Ein **Szenario-Validator** prüft vor jeder Auftragsausgabe strikt folgende Regeln:
+
+1. **Absender-Fracht-Konsistenz:**
+* Heidelberg (`{KOCH}`) erteilt *nur* Aufträge bezüglich Chemikalien (`F8`), Abwasser (`F10`), Bunker-Diesel (`F12`) oder Meth-Rohschmuggel (`F9` nach Kalanga). Niemals verlangt er isolierten Kopra-Kuchen!
+* Nyoman (`{KOOPERATIVE_CHEF}`) fordert *nur* Nüsse (`F4`), Speiseöl (`F5`), Kopra (`F6`), Holz/Fasern (`F7`) oder Arbeiter-Transporte (`F15`).
+
+
+2. **Ziel-Sperren bei Störung:**
+* Wenn `HAFEN-KOLLAPS` aktiv ist $\rightarrow$ Ziel *Port Varan* gesperrt! Nur Abtransporte *aus* dem Hafen sind zulässig.
+
+
+3. **Mischzug-Obergrenze:**
+* Maximal 2 Waggons im Zugverband. Mischzüge (z. B. `Personenwagen` + `Güterwagen`) treten nur auf, wenn das Szenario dies explizit verlangt (Begleitschutz, Inspektoren-Begleitung).
+
+
+4. **Reinigungs-Seltenheit:**
+* Reinigungs-Spülfahrten mit `Kessel-VTG` oder `Reinigungsmittel` (`F13`) treten nur bei explizitem Chemie-/Ekel-Vorfall auf (Maximal 5% aller Aufträge).
+
+
+
+---
+
+### Nächster Schritt
+
+Diese umfassende Struktur garantiert volle logische Konsistenz, hunderte abwechslungsreiche Geschichten und echtes Far-Cry-3-Feeling auf deiner Modellbahn.
+
