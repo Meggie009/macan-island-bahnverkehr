@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="de" class="dark h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Macan Island - Master Dispatcher Terminal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            macan: {
+              bg: '#080d12',
+              card: '#0e1720',
+              border: '#1a2936',
+              accent: '#00e5ff',
+              accentDark: '#008ba3',
+              gold: '#ffb700',
+              alert: '#ff3b30',
+              green: '#20e070',
+              saeure: '#cfd8dc', // Identisches Säure-Grau für Kessel & Kessel-VTG
+            }
+          },
+          fontFamily: {
+            mono: ['Courier New', 'Consolas', 'monospace'],
+            sans: ['Inter', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Custom Scrollbar for Tactical Screen */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #080d12; }
+    ::-webkit-scrollbar-thumb { background: #1a2936; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #00e5ff; }
+
+    .glow-accent { box-shadow: 0 0 15px rgba(0, 229, 255, 0.15); }
+    .glow-gold { box-shadow: 0 0 15px rgba(255, 183, 0, 0.2); }
+    .glow-alert { box-shadow: 0 0 15px rgba(255, 59, 48, 0.25); }
+
+    .scanline {
+      background: linear-gradient(
+        to bottom,
+        rgba(255,255,255,0),
+        rgba(255,255,255,0) 50%,
+        rgba(0, 0, 0, 0.2) 50%,
+        rgba(0, 0, 0, 0.2)
+      );
+      background-size: 100% 4px;
+    }
+
+    /* Drag and drop visuals */
+    .wagon-card.dragging {
+      opacity: 0.4;
+      transform: scale(0.95);
+      border-color: #00e5ff;
+    }
+    .track-dropzone.drag-over {
+      background-color: rgba(0, 229, 255, 0.1);
+      border-color: #00e5ff !important;
+    }
+    .track-dropzone.drag-blocked {
+      background-color: rgba(255, 59, 48, 0.15);
+      border-color: #ff3b30 !important;
+    }
+  </style>
+</head>
+<body class="bg-macan-bg text-slate-200 font-sans min-h-full flex flex-col antialiased selection:bg-macan-accent selection:text-black">
+
+  <!-- TOP HEADER / DISPATCH NAVIGATION -->
+  <header class="border-b border-macan-border bg-macan-card/90 backdrop-blur sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-4">
+      <div class="flex items-center space-x-3">
+        <div class="w-3 h-3 rounded-full bg-macan-accent animate-pulse"></div>
+        <div>
+          <h1 class="font-mono text-lg font-bold tracking-wider text-macan-accent flex items-center gap-2">
+            MACAN DISPATCH <span class="text-xs px-2 py-0.5 rounded bg-macan-border text-slate-300">POLYNESIEN</span>
+          </h1>
+          <p class="text-xs text-slate-400 font-mono">DISPONENT-ENG/NE #4097-MASTER [STRECKEN-KONTROLLE]</p>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex items-center gap-2">
+        <button onclick="openScenarioModal()" class="px-3 py-1.5 rounded text-xs font-mono font-semibold bg-macan-border hover:bg-slate-700 text-slate-200 border border-slate-600 transition flex items-center gap-1.5">
+          <svg class="w-4 h-4 text-macan-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+          SZENARIO-KATALOG
+        </button>
+
+        <button onclick="generateRandomTask()" class="px-3 py-1.5 rounded text-xs font-mono font-semibold bg-macan-accent/20 hover:bg-macan-accent/30 text-macan-accent border border-macan-accent/40 transition flex items-center gap-1.5">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+          NEUER ZUFALLSAUFTRAG
+        </button>
+
+        <button onclick="openEditorModal()" class="px-3 py-1.5 rounded text-xs font-mono font-bold bg-macan-gold text-black hover:bg-yellow-400 transition flex items-center gap-1.5 shadow-lg shadow-macan-gold/10">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+          [ANLAGEN-STATUS / EDITOR]
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN DISPATCH TERMINAL BODY -->
+  <main class="flex-grow max-w-7xl w-full mx-auto p-4 grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+    <!-- LEFT COLUMN: ACTIVE DISPATCH TASK CARD (7 cols) -->
+    <section class="lg:col-span-7 flex flex-col gap-5">
+      
+      <!-- TASK BANNER CARD -->
+      <div class="bg-macan-card border border-macan-border rounded-lg p-5 shadow-xl relative overflow-hidden">
+        <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-macan-accent via-macan-gold to-macan-accent"></div>
+
+        <!-- Header line -->
+        <div class="flex items-center justify-between border-b border-macan-border/60 pb-3 mb-4">
+          <div>
+            <span id="task-id-badge" class="font-mono text-xs px-2 py-1 rounded bg-macan-border text-macan-accent font-bold">AUFTRAG #4097</span>
+            <span id="task-cargo-code" class="font-mono text-xs ml-2 text-slate-400">FRACHT: F6</span>
+          </div>
+          <span id="task-status-badge" class="text-xs font-mono px-2.5 py-1 rounded-full bg-macan-accent/10 text-macan-accent border border-macan-accent/30 font-semibold">
+            STATUS: AKTIV (ANLAGE PERSISTENT)
+          </span>
+        </div>
+
+        <!-- Task Title -->
+        <h2 id="task-title" class="text-2xl font-black text-white tracking-wide uppercase mb-3">
+          KOPRA-KUCHEN EXPORT
+        </h2>
+
+        <!-- Character O-Ton & Lore Box -->
+        <div class="bg-macan-bg/80 border border-macan-border rounded p-4 mb-5">
+          <div class="flex items-center gap-3 mb-2">
+            <div id="character-avatar" class="w-8 h-8 rounded-full bg-macan-accent/20 border border-macan-accent flex items-center justify-center font-bold text-macan-accent text-sm">
+              MA
+            </div>
+            <div>
+              <h3 id="character-name" class="text-xs font-bold font-mono text-macan-accent uppercase">MISS ADELAIDE</h3>
+              <p id="character-role" class="text-[11px] text-slate-400">HAFENMEISTERIN PORT VARAN</p>
+            </div>
+          </div>
+          <p id="lore-quote" class="text-sm italic text-slate-300 font-serif leading-relaxed pl-2 border-l-2 border-macan-accent">
+            „Die Ma'coco-Pflücker der Kelapa-Kooperative schieffen pausenlos Kopra nach Port Varan. Ich dulde keine rumstehenden Waggons am Kai 1! Schafft das Zeug unverzüglich zum Zwischenlager!“
+          </p>
+          <div id="lore-subtext" class="mt-2 text-xs text-slate-400 font-sans border-t border-macan-border/40 pt-2">
+            Adelaide duldet keine Gleisblockaden am Hafen und droht, herrenlose Waggons ins Hafenbecken zu werfen.
+          </div>
+        </div>
+
+        <!-- RÄUMUNGS-WARNUNG / CAPACITY ALERT PANEL (Dynamisch wenn Ziel voll) -->
+        <div id="evacuation-alert-panel" class="hidden mb-5 bg-macan-gold/10 border-2 border-macan-gold/60 rounded-lg p-4 glow-gold">
+          <div class="flex items-start gap-3">
+            <div class="p-2 rounded bg-macan-gold text-black font-bold">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+            </div>
+            <div>
+              <h4 class="font-mono text-sm font-bold text-macan-gold uppercase tracking-wider">
+                GLEIS-KAPAZITÄT ÜBERSCHRITTEN – RÄUMUNGSSCHRITT ERFORDERLICH!
+              </h4>
+              <p id="evacuation-alert-text" class="text-xs text-yellow-100/90 mt-1">
+                Das Zielgleis ist voll belegt. Bevor der Transport durchgeführt werden kann, muss ein Waggon wegrangiert werden!
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- MODELLBAHN-STEPS (RANGIERSCHRITTE) -->
+        <div class="bg-macan-bg/50 border border-macan-border rounded-lg p-4">
+          <h3 class="text-xs font-mono uppercase tracking-wider text-macan-accent font-bold mb-3 flex items-center justify-between">
+            <span>ABLAUF & TEILAUFGABEN (MODELLBAHN-STEPS)</span>
+            <span class="text-[10px] text-slate-400 font-normal">STRECKEN-GEPRÜFT</span>
+          </h3>
+
+          <div id="shunt-steps-list" class="space-y-3">
+            <!-- Dynamisch befüllt mit Steps (inkl. gelbem Räumungsschritt falls nötig) -->
+          </div>
+        </div>
+
+        <!-- MISSION METADATA FOOTER -->
+        <div class="mt-5 grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4 border-t border-macan-border text-xs font-mono">
+          <div class="bg-macan-bg p-2.5 rounded border border-macan-border">
+            <span class="text-slate-400 block text-[10px]">START-GLEIS</span>
+            <span id="meta-start-track" class="font-bold text-macan-accent">BARAKI PALMS</span>
+          </div>
+          <div class="bg-macan-bg p-2.5 rounded border border-macan-border">
+            <span class="text-slate-400 block text-[10px]">ZIEL-GLEIS</span>
+            <span id="meta-target-track" class="font-bold text-macan-accent">PORT VARAN NORD</span>
+          </div>
+          <div class="bg-macan-bg p-2.5 rounded border border-macan-border">
+            <span class="text-slate-400 block text-[10px]">FRACHTGUT</span>
+            <span id="meta-cargo" class="font-bold text-slate-200">KOPRA-KUCHEN</span>
+          </div>
+          <div class="bg-macan-bg p-2.5 rounded border border-macan-border">
+            <span class="text-slate-400 block text-[10px]">ZUGEORDNETER WAGGON</span>
+            <span id="meta-wagon" class="font-bold text-macan-gold">GEDECKTE TONNE</span>
+          </div>
+        </div>
+
+        <div class="mt-3 text-[11px] text-slate-400 italic bg-macan-bg/40 p-2 rounded border border-macan-border/40">
+          <span class="text-macan-gold font-bold font-mono">AUFLAGE:</span> <span id="meta-condition">Nebenprodukt der Ölpresse der Kelapa-Kooperative. Nur Export / Verwertung zulässig!</span>
+        </div>
+
+      </div>
+
+      <!-- DIRECTED LOGIC RULES INFO BANNER -->
+      <div class="bg-macan-card border border-macan-border rounded-lg p-4">
+        <h3 class="text-xs font-mono font-bold text-slate-300 uppercase tracking-wider mb-2 flex items-center gap-2">
+          <svg class="w-4 h-4 text-macan-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          RICHTUNGSGEBUNDENE WARENSTROM-GARANTIE
+        </h3>
+        <ul class="text-xs text-slate-400 space-y-1.5 list-disc pl-4">
+          <li><strong class="text-slate-200">Baraki Palms (Kelapa-Kooperative):</strong> Produziert Kopra-Kuchen (F6), Kokosöl (F5) und Erntegut (F4) $\rightarrow$ Export nur nach Port Varan Nord oder Kalanga.</li>
+          <li><strong class="text-slate-200">Keine Rückwärtsschleifen:</strong> Kopra-Kuchen wird NIEMALS am Hafen geladen, um nach Baraki zurückzufahren!</li>
+          <li><strong class="text-slate-200">Säure & Chemie (F8, F10):</strong> Gehen direkt in die Stollenküche (Oshira) bzw. zur Entsorgungsmole (Port Varan Süd).</li>
+          <li><strong class="text-slate-200">Meth & Konserven (F2, F9):</strong> Stollen $\rightarrow$ Kalanga Süd $\rightarrow$ Port Varan Nord.</li>
+        </ul>
+      </div>
+
+    </section>
+
+
+    <!-- RIGHT COLUMN: TRACK OCCUPANCY LIVE OVERVIEW (5 cols) -->
+    <section class="lg:col-span-5 flex flex-col gap-5">
+      
+      <div class="bg-macan-card border border-macan-border rounded-lg p-5 shadow-xl">
+        <div class="flex items-center justify-between border-b border-macan-border pb-3 mb-4">
+          <h2 class="font-mono text-sm font-bold text-slate-200 uppercase tracking-wider flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-macan-green animate-ping"></span>
+            LIVE GLEIS-BELEGUNG (EXCEL 1:1)
+          </h2>
+          <button onclick="openEditorModal()" class="text-xs font-mono text-macan-accent hover:underline">
+            Bearbeiten &rarr;
+          </button>
+        </div>
+
+        <p class="text-xs text-slate-400 mb-4">
+          Aktuelle Standorte aller 10 Waggons auf der Modellbahn-Anlage.
+        </p>
+
+        <!-- Live Track List -->
+        <div id="live-track-list" class="space-y-3 font-mono text-xs">
+          <!-- Dynamisch gerendert -->
+        </div>
+
+        <!-- Legend -->
+        <div class="mt-5 pt-3 border-t border-macan-border/60 grid grid-cols-2 gap-2 text-[11px] text-slate-400">
+          <div class="flex items-center gap-1.5">
+            <span class="w-2.5 h-2.5 rounded bg-macan-saeure border border-slate-500"></span>
+            <span>Kessel (Säure-Grau #cfd8dc)</span>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <span class="w-2.5 h-2.5 rounded bg-macan-gold"></span>
+            <span>Salonwagen Govaart</span>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <span class="w-2.5 h-2.5 rounded bg-macan-alert"></span>
+            <span>Gesperrt (Cap 0)</span>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <span class="w-2.5 h-2.5 rounded bg-macan-green"></span>
+            <span>Kapazität frei</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Lore Faction Quick Glance Card -->
+      <div class="bg-macan-card border border-macan-border rounded-lg p-4 font-mono text-xs text-slate-300">
+        <h3 class="font-bold text-macan-gold uppercase tracking-wider mb-2">AKTEURE & FRAKTIONEN</h3>
+        <div class="space-y-2 text-[11px]">
+          <div class="border-b border-macan-border/40 pb-1">
+            <span class="text-macan-accent font-bold">Ma'coco:</span> Indigene Nusssammler / Pflücker der Kelapa-Kooperative unter Nyoman.
+          </div>
+          <div class="border-b border-macan-border/40 pb-1">
+            <span class="text-macan-gold font-bold">Govaart:</span> Machtinhaber & Syndikat-Boss. Verlangt Waffeneskorten & Personenwagen.
+          </div>
+          <div class="border-b border-macan-border/40 pb-1">
+            <span class="text-slate-200 font-bold">Wokong & Ma'an:</span> Dschungel-Guerilla. Erpressen Trinkwasser & blockieren Stollen.
+          </div>
+          <div>
+            <span class="text-red-400 font-bold">Heidelberg:</span> Meth-Laborant im Oshira-Stollen. Braucht ständig Säure (F8).
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- FOOTER -->
+  <footer class="border-t border-macan-border bg-macan-card text-center py-3 text-xs font-mono text-slate-500 mt-auto">
+    MACAN ISLAND DISPATCH SYSTEM &bull; AKTUELLES FORMAT 10 WAGGONS &bull; VOLLE PERSISTENZ (LOCALSTORAGE)
+  </footer>
+
+
+  <!-- MODAL 1: INTERAKTIVER DRAG & DROP WAGGON-EDITOR [ANLAGEN-STATUS / EDITOR] -->
+  <div id="editor-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-macan-card border-2 border-macan-gold rounded-xl max-w-5xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden glow-gold">
+      
+      <!-- Modal Header -->
+      <div class="bg-macan-bg p-4 border-b border-macan-border flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-3 h-3 bg-macan-gold rounded-full animate-ping"></div>
+          <div>
+            <h2 class="font-mono text-base font-bold text-macan-gold uppercase tracking-wider">
+              [ANLAGEN-STATUS / EDITOR] – MODELLBAHN INTERAKTIV
+            </h2>
+            <p class="text-xs text-slate-400">
+              Verschiebe Waggons per Drag & Drop oder Klick (Mobile-Tap). Die Gleis-Kapazitäten werden sofort geprüft!
+            </p>
+          </div>
+        </div>
+        <button onclick="closeEditorModal()" class="text-slate-400 hover:text-white p-1 rounded hover:bg-macan-border">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+
+      <!-- Modal Content Area -->
+      <div class="p-5 overflow-y-auto flex-grow space-y-6">
+
+        <!-- Mobile / Tap status indicator -->
+        <div id="tap-selected-info" class="hidden bg-macan-accent/20 border border-macan-accent rounded p-2 text-xs font-mono text-macan-accent flex items-center justify-between">
+          <span id="tap-selected-text">Waggon ausgewählt. Klicke auf ein Zielgleis, um ihn zu platzieren!</span>
+          <button onclick="clearTapSelection()" class="text-slate-300 underline font-normal">Abbrechen</button>
+        </div>
+
+        <!-- TRACK LAYOUT GRID -->
+        <div id="editor-tracks-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <!-- Dynamisch erzeugt -->
+        </div>
+
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="bg-macan-bg p-4 border-t border-macan-border flex items-center justify-between">
+        <div class="text-xs font-mono text-slate-400">
+          Kapazitätsgrenzen strikt eingehalten (Excel 1:1 Topologie).
+        </div>
+        <div class="flex gap-2">
+          <button onclick="resetTracksToDefault()" class="px-3 py-2 rounded text-xs font-mono bg-macan-border hover:bg-slate-700 text-slate-300 transition">
+            Standard-Aufstellung
+          </button>
+          <button onclick="closeEditorModal()" class="px-5 py-2 rounded text-xs font-mono font-bold bg-macan-gold text-black hover:bg-yellow-400 transition shadow">
+            ANWENDEN & LIVE-SCHALTEN
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- MODAL 2: SZENARIO-KATALOG MODAL -->
+  <div id="scenario-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-macan-card border border-macan-accent rounded-xl max-w-4xl w-full max-h-[85vh] flex flex-col shadow-2xl overflow-hidden glow-accent">
+      
+      <!-- Header -->
+      <div class="bg-macan-bg p-4 border-b border-macan-border flex items-center justify-between">
+        <div>
+          <h2 class="font-mono text-base font-bold text-macan-accent uppercase tracking-wider">
+            SZENARIO-KATALOG (LORE-GETREUE AUFTRÄGE)
+          </h2>
+          <p class="text-xs text-slate-400">Wähle eines der 12 korrigierten, logisch konsistenten Insel-Szenarien aus</p>
+        </div>
+        <button onclick="closeScenarioModal()" class="text-slate-400 hover:text-white p-1 rounded hover:bg-macan-border">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+
+      <!-- Scenario List -->
+      <div id="scenario-list-container" class="p-5 overflow-y-auto space-y-3 font-mono">
+        <!-- Dynamisch erzeugt -->
+      </div>
+
+      <!-- Footer -->
+      <div class="bg-macan-bg p-3 border-t border-macan-border text-right">
+        <button onclick="closeScenarioModal()" class="px-4 py-1.5 rounded text-xs font-mono bg-macan-border hover:bg-slate-700 text-slate-300">
+          Schließen
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toast-container" class="fixed bottom-4 right-4 z-50 flex flex-col gap-2"></div>
+
+
+  <!-- JAVASCRIPT ENGINE LOGIC -->
+  <script>
+
+    // 1. GLEIS-TOPOLOGIE & KAPAZITÄTEN (1:1 EXCEL-VORGABE)
+    const TRACKS = [
+      { id: 'pv_nord', name: 'Port Varan Nord', cap: 6, desc: 'Schattenbahnhof / Pier (Import/Export)' },
+      { id: 'pv_sued', name: 'Port Varan Süd', cap: 3, desc: 'Entsorgungs-Mole & Sumpf' },
+      { id: 'pv_abst', name: 'Port Varan Abstellung', cap: 0, desc: 'GESPERRT (Gleisschaden)' },
+      { id: 'baraki', name: 'Baraki Palms', cap: 3, desc: 'Kelapa-Kooperative & Öl-Mühle' },
+      { id: 'kalanga_nord', name: 'Kalanga Fishworks Nord', cap: 2, desc: 'Anlieferung & Altblech-Lager' },
+      { id: 'kalanga_sued', name: 'Kalanga Fishworks Süd', cap: 4, desc: 'Konserven-Verladung & Meth-Coup' },
+      { id: 'oshira_kueche', name: 'Oshira Stollen Küche', cap: 1, desc: 'Bunker-Labor & Meth-Küche' },
+      { id: 'oshira_abst', name: 'Oshira Stollen Abstellung', cap: 0, desc: 'GESPERRT (Einsturzgefahr)' }
+    ];
+
+    // 2. WAGGONS (EXAKT 10 STÜCK, Speiseöl & Säure tragen IDENTISCHES Säure-Grau #cfd8dc)
+    const WAGONS = [
+      { id: 'w1', name: 'Gedeckte Tonne', code: 'W-01', type: 'Gedeckt', color: '#8d6e63', textColor: '#ffffff' },
+      { id: 'w2', name: 'Kisten Kasten', code: 'W-02', type: 'Gedeckt', color: '#a1887f', textColor: '#ffffff' },
+      { id: 'w3', name: 'Kessel (Speiseöl)', code: 'W-03', type: 'Kessel', color: '#cfd8dc', textColor: '#1a2936' }, // SÄURE-GRAU
+      { id: 'w4', name: 'Kessel-VTG (Säure)', code: 'W-04', type: 'Kessel', color: '#cfd8dc', textColor: '#1a2936' }, // SÄURE-GRAU
+      { id: 'w5', name: 'Rungenwagen', code: 'W-05', type: 'Flach', color: '#78909c', textColor: '#ffffff' },
+      { id: 'w6', name: 'Niederbordwagen', code: 'W-06', type: 'Flach', color: '#8d8d8d', textColor: '#ffffff' },
+      { id: 'w7', name: 'Kühlwagen', code: 'W-07', type: 'Kühl', color: '#e0f7fa', textColor: '#006064' },
+      { id: 'w8', name: 'Fisch-Kessel', code: 'W-08', type: 'Kessel', color: '#4dd0e1', textColor: '#004d40' },
+      { id: 'w9', name: 'Govaart Salonwagen', code: 'W-09', type: 'Passagier', color: '#ffb700', textColor: '#000000' },
+      { id: 'w10', name: 'Militär-Flachwagen', code: 'W-10', type: 'Schwergut', color: '#558b2f', textColor: '#ffffff' }
+    ];
+
+    // Default Wagon Locations (Standard Startaufstellung)
+    const DEFAULT_WAGON_POSITIONS = {
+      'w1': 'baraki',
+      'w2': 'pv_nord',
+      'w3': 'baraki',
+      'w4': 'pv_nord',
+      'w5': 'kalanga_nord',
+      'w6': 'kalanga_sued',
+      'w7': 'kalanga_sued',
+      'w8': 'pv_sued',
+      'w9': 'pv_nord',
+      'w10': 'pv_nord'
+    };
+
+    // 3. SZENARIEN KATALOG (12 SANIERTE, KONSISTENTE AUFTRÄGE MIT REGELN)
+    const SCENARIOS = [
+      {
+        id: 1,
+        code: '#4097',
+        title: 'KOPRA-KUCHEN EXPORT',
+        cargoCode: 'FRACHT F6',
+        cargoName: 'Kopra-Kuchen',
+        wagonId: 'w1', // Gedeckte Tonne
+        startTrackId: 'baraki',
+        targetTrackId: 'pv_nord',
+        character: {
+          name: "MISS ADELAIDE",
+          role: "HAFENMEISTERIN PORT VARAN",
+          avatar: "MA",
+          quote: "„Die Ma'coco-Pflücker der Kelapa-Kooperative schieffen pausenlos Kopra nach Port Varan. Ich dulde keine rumstehenden Waggons am Kai 1! Schafft das Zeug unverzüglich zum Zwischenlager!“",
+          subtext: "Adelaide duldet keine Gleisblockaden am Kai und droht, herrenlose Züge ins Hafenbecken zu werfen."
+        },
+        condition: "Nebenprodukt der Ölmühlen. Darf NIEMALS importiert, sondern nur abtransportiert werden!"
+      },
+      {
+        id: 2,
+        code: '#8821',
+        title: 'GOVAART SALONWAGEN-ESKORTE',
+        cargoCode: 'FRACHT VIP',
+        cargoName: 'Salonwagen / Machtrepräsentation',
+        wagonId: 'w9', // Salonwagen
+        startTrackId: 'pv_nord',
+        targetTrackId: 'baraki',
+        character: {
+          name: "GOVAART",
+          role: "BOSS VON MACAN ISLAND",
+          avatar: "GV",
+          quote: "„Bürgermeister Washington zittert vor dem Auditor. Ich werde ihn im gepanzerten Salonwagen nach Baraki begleiten. Bereitstellen am Hauptgleis, jetzt!“",
+          subtext: "Govaart verlangt uneingeschränkte Priorität für seine Inspektionstour."
+        },
+        condition: "Personentransport mit Bewaffnung. Platzieren ohne Zugverzögerung."
+      },
+      {
+        id: 3,
+        code: '#1044',
+        title: 'SÄURE-NACHSCHUB FÜR STOLLEN',
+        cargoCode: 'FRACHT F8',
+        cargoName: 'Säure / Chemie-Konserve',
+        wagonId: 'w4', // Kessel-VTG (Säure)
+        startTrackId: 'pv_nord',
+        targetTrackId: 'oshira_kueche',
+        character: {
+          name: "HEIDELBERG",
+          role: "CHEFMETH-LABORANT OSHIRA STOLLEN",
+          avatar: "HB",
+          quote: "„Die Reaktoren kühlen ab! Wenn der Kessel-VTG mit der Salzsäure vom Frachter nicht in einer Stunde in der Stollenküche steht, fliegt das Labor in die Luft!“",
+          subtext: "Gefahrstoff-Transport mit höchster Dringlichkeit."
+        },
+        condition: "Ätzend. Nur auf Oshira Stollen Küche lieferbar (Kapazität max 1!)."
+      },
+      {
+        id: 4,
+        code: '#5539',
+        title: 'FISCHKONSERVEN & METH-COUP',
+        cargoCode: 'FRACHT F2',
+        cargoName: 'Getarnte Fischkonserven',
+        wagonId: 'w7', // Kühlwagen
+        startTrackId: 'kalanga_sued',
+        targetTrackId: 'pv_nord',
+        character: {
+          name: "WAYAN",
+          role: "LEITER KALANGA FISHWORKS",
+          avatar: "WY",
+          quote: "„In den Sardinendosen unter dem Eis liegen 150kg Meth aus Heidelbergs Stollen. Der Trawler der Schwarzflotte verlässt den Pier um Punkt Mitternacht!“",
+          subtext: "Illegale Fracht getarnt als Speisefisch-Export."
+        },
+        condition: "Kühlkette einhalten und zügig zum Frachter an Port Varan Nord."
+      },
+      {
+        id: 5,
+        code: '#3312',
+        title: 'KOKOSÖL FÜR DIE FISCHFABRIK',
+        cargoCode: 'FRACHT F5',
+        cargoName: 'Kokosöl (Speiseöl)',
+        wagonId: 'w3', // Kessel Speiseöl
+        startTrackId: 'baraki',
+        targetTrackId: 'kalanga_nord',
+        character: {
+          name: "NYOMAN",
+          role: "LEITER KELAPA-KOOPERATIVE",
+          avatar: "NY",
+          quote: "„Die Ma'coco haben fünf Tonnen reinstes Kokosöl gepresst. Wayan braucht es in Kalanga zum Einlegen der Fischkonserven. Schickt den Kessel los!“",
+          subtext: "Direkte Lieferkette zwischen den indigenen Erzeugern und der Konservenfabrik."
+        },
+        condition: "Nahrungsmittel-Qualität. Transport von Baraki nach Kalanga Nord."
+      },
+      {
+        id: 6,
+        code: '#7741',
+        title: 'CHEMIE-ABWASSER ENTSORGUNG',
+        cargoCode: 'FRACHT F10',
+        cargoName: 'Chemisches Abwasser',
+        wagonId: 'w4', // Kessel VTG
+        startTrackId: 'oshira_kueche',
+        targetTrackId: 'pv_sued',
+        character: {
+          name: "WOKONG & MA'AN",
+          role: "DSCHUNGEL-REBELLEN",
+          avatar: "MA",
+          quote: "„Govaarts Labor verseucht das Grundwasser! Schafft den Giftschlamm sofort zur Entsorgungs-Mole an Port Varan Süd, oder wir sprengen die Schienen!“",
+          subtext: "Erpressung durch die Rebellen. Giftmüll darf nicht im Dschungel verbleiben."
+        },
+        condition: "Gefahrgut muss zwingend zur Süd-Mole abtransportiert werden."
+      },
+      {
+        id: 7,
+        code: '#9012',
+        title: 'ALTBLECH FÜR CONSERVENDOSEN',
+        cargoCode: 'FRACHT F16',
+        cargoName: 'Altblech-Muster',
+        wagonId: 'w5', // Rungenwagen
+        startTrackId: 'pv_nord',
+        targetTrackId: 'kalanga_nord',
+        character: {
+          name: "WAYAN",
+          role: "LEITER KALANGA FISHWORKS",
+          avatar: "WY",
+          quote: "„Uns gehen die Blechtafeln für die Fischdosen aus! Das Wrackgut vom Frachter muss vom Nordkai nach Kalanga Nord gebracht werden.“",
+          subtext: "Rohmaterial für die Verpackungsstraßen der Fischfabrik."
+        },
+        condition: "Transport von Schwergut vom Import-Pier nach Kalanga."
+      },
+      {
+        id: 8,
+        code: '#2209',
+        title: 'TRINKWASSER-BOYKOTT REDUZIEREN',
+        cargoCode: 'FRACHT F19',
+        cargoName: 'Trinkwasser-Zisterne',
+        wagonId: 'w3', // Kessel
+        startTrackId: 'baraki',
+        targetTrackId: 'oshira_kueche',
+        character: {
+          name: "BÜRGERMEISTER WASHINGTON",
+          role: "ZIVILVERWALTUNG MACAN",
+          avatar: "WS",
+          quote: "„Die Guerilla hat die Bergwasserleitung gecuttet! Heidelberg streikt im Stollen ohne Trinkwasser. Bringt sofort einen Kessel aus Baraki hoch!“",
+          subtext: "Washington versucht die Balance zwischen den Fraktionen zu wahren."
+        },
+        condition: "Lebensnotwendiges Trinkwasser für das Laborpersonal im Stollen."
+      },
+      {
+        id: 9,
+        code: '#6118',
+        title: 'METH-ROHSTOFF COURIER',
+        cargoCode: 'FRACHT F9',
+        cargoName: 'Meth-Rohstoff (Kristall-Paste)',
+        wagonId: 'w2', // Kisten Kasten
+        startTrackId: 'oshira_kueche',
+        targetTrackId: 'kalanga_sued',
+        character: {
+          name: "HEIDELBERG",
+          role: "CHEFMETH-LABORANT OSHIRA STOLLEN",
+          avatar: "HB",
+          quote: "„Die Paste ist getrocknet. Verladet die Kisten in einen unauffälligen gedeckten Waggon und bringt sie direkt in Wayans Fischverpackung!“",
+          subtext: "Interne Zwischenlieferung unter strengster Geheimhaltung."
+        },
+        condition: "Hoher Wert. Direkter Transfer Stollenküche -> Kalanga Süd."
+      },
+      {
+        id: 10,
+        code: '#1182',
+        title: 'FISCHABFALL-RÄUMUNG',
+        cargoCode: 'FRACHT F3',
+        cargoName: 'Gärende Fischabfälle',
+        wagonId: 'w8', // Fisch-Kessel
+        startTrackId: 'kalanga_sued',
+        targetTrackId: 'pv_sued',
+        character: {
+          name: "MISS ADELAIDE",
+          role: "HAFENMEISTERIN PORT VARAN",
+          avatar: "MA",
+          quote: "„Der Gestank aus Kalanga zieht rüber bis zum Yachthafen! Rollt den Fisch-Kessel sofort runter zur Sumpf-Mole an Port Varan Süd!“",
+          subtext: "Entsorgungsfahrt zur Meeres-Entsorgungsmole."
+        },
+        condition: "Geruchsbelästigung. Nur für Port Varan Süd freigegeben."
+      },
+      {
+        id: 11,
+        code: '#4490',
+        title: 'DSCHUNGEL-TREIBSTOFF NOTFALL',
+        cargoCode: 'FRACHT F12',
+        cargoName: 'Diesel-Kraftstoff',
+        wagonId: 'w3', // Kessel
+        startTrackId: 'pv_nord',
+        targetTrackId: 'baraki',
+        character: {
+          name: "NYOMAN",
+          role: "LEITER KELAPA-KOOPERATIVE",
+          avatar: "NY",
+          quote: "„Die Generatoren der Ma'coco-Mühlen fallen aus! Wir brauchen den Kesselwagen mit Treibstoff vom Hafen umgehend in Baraki Palms.“",
+          subtext: "Versorgungsfahrt für die Verarbeitungsanlagen."
+        },
+        condition: "Treibstoff-Import vom Frachter zum Binnenland-Standort."
+      },
+      {
+        id: 12,
+        code: '#8301',
+        title: 'AUDIT-PANIK: SCHWERGUT RÄUMEN',
+        cargoCode: 'FRACHT MIL',
+        cargoName: 'Militär-Ausrüstung',
+        wagonId: 'w10', // Militär-Flachwagen
+        startTrackId: 'pv_nord',
+        targetTrackId: 'kalanga_nord',
+        character: {
+          name: "BÜRGERMEISTER WASHINGTON",
+          role: "ZIVILVERWALTUNG MACAN",
+          avatar: "WS",
+          quote: "„Ein Inspektor der Kolonialbehörde ist im Anflug! Der Rüstungswagen darf nicht offen am Hafen stehen! Versteckt ihn auf Kalanga Nord!“",
+          subtext: "Panik vor Entdeckung verdeckter Militärgüter."
+        },
+        condition: "Verlagerung von Militärgut auf Nebengleise."
+      }
+    ];
+
+    // 4. GLOBAL STATE
+    let state = {
+      activeScenarioId: 1,
+      wagonPositions: { ...DEFAULT_WAGON_POSITIONS },
+      tapSelectedWagonId: null
+    };
+
+    // Load from LocalStorage
+    function loadState() {
+      const saved = localStorage.getItem('macan_dispatch_state');
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          if (parsed.wagonPositions) state.wagonPositions = parsed.wagonPositions;
+          if (parsed.activeScenarioId) state.activeScenarioId = parsed.activeScenarioId;
+        } catch(e) {
+          console.error("Fehler beim Laden des Speicherstands", e);
+        }
+      }
+    }
+
+    function saveState() {
+      localStorage.setItem('macan_dispatch_state', JSON.stringify(state));
+    }
+
+    // Helper Functions
+    function getTrack(id) { return TRACKS.find(t => t.id === id); }
+    function getWagon(id) { return WAGONS.find(w => w.id === id); }
+    function getWagonsOnTrack(trackId) {
+      return WAGONS.filter(w => state.wagonPositions[w.id] === trackId);
+    }
+
+    // MAIN TASK DISPATCHER RENDERER
+    function renderActiveTask() {
+      const scenario = SCENARIOS.find(s => s.id === state.activeScenarioId) || SCENARIOS[0];
+      const targetWagon = getWagon(scenario.wagonId);
+      const currentWagonTrackId = state.wagonPositions[targetWagon.id];
+      const currentWagonTrack = getTrack(currentWagonTrackId);
+      const targetTrack = getTrack(scenario.targetTrackId);
+
+      // Meta Elements
+      document.getElementById('task-id-badge').innerText = `AUFTRAG ${scenario.code}`;
+      document.getElementById('task-cargo-code').innerText = scenario.cargoCode;
+      document.getElementById('task-title').innerText = scenario.title;
+      document.getElementById('character-avatar').innerText = scenario.character.avatar;
+      document.getElementById('character-name').innerText = scenario.character.name;
+      document.getElementById('character-role').innerText = scenario.character.role;
+      document.getElementById('lore-quote').innerText = scenario.character.quote;
+      document.getElementById('lore-subtext').innerText = scenario.character.subtext;
+
+      document.getElementById('meta-start-track').innerText = currentWagonTrack.name.toUpperCase();
+      document.getElementById('meta-target-track').innerText = targetTrack.name.toUpperCase();
+      document.getElementById('meta-cargo').innerText = scenario.cargoName;
+      document.getElementById('meta-wagon').innerText = targetWagon.name;
+      document.getElementById('meta-condition').innerText = scenario.condition;
+
+      // PRÜFUNG DER ZIELGLEIS-KAPAZITÄT & RÄUMUNGSSCHRITT
+      const wagonsOnTarget = getWagonsOnTrack(targetTrack.id);
+      const isTargetFull = wagonsOnTarget.length >= targetTrack.cap && currentWagonTrackId !== targetTrack.id;
+
+      const alertPanel = document.getElementById('evacuation-alert-panel');
+      const stepsContainer = document.getElementById('shunt-steps-list');
+      stepsContainer.innerHTML = '';
+
+      let stepCounter = 1;
+
+      if (isTargetFull) {
+        alertPanel.classList.remove('hidden');
+        document.getElementById('evacuation-alert-text').innerText = 
+          `Das Zielgleis "${targetTrack.name}" ist mit ${wagonsOnTarget.length}/${targetTrack.cap} Waggons VOLL! Ein Räumungsschritt ist zwingend vorgeschaltet.`;
+
+        // We pick one wagon on the target track to evacuate
+        const wagonToEvacuate = wagonsOnTarget[0];
+        // Find an alternative track with free capacity
+        const altTrack = TRACKS.find(t => t.cap > 0 && t.id !== targetTrack.id && getWagonsOnTrack(t.id).length < t.cap) || TRACKS[0];
+
+        // Step 0: Gelber Räumungsschritt
+        const evacStepHtml = `
+          <div class="bg-macan-gold/20 border-l-4 border-macan-gold p-3 rounded font-mono text-xs flex items-start gap-3">
+            <span class="px-2 py-0.5 rounded bg-macan-gold text-black font-bold">RÄUMUNG</span>
+            <div>
+              <div class="font-bold text-macan-gold uppercase">RÄUMUNGSSCHRITT: GLEIS KANOPISIEREN</div>
+              <p class="text-yellow-100/90 text-[11px] mt-0.5">
+                Rangiere Waggon <strong class="underline">${wagonToEvacuate.name}</strong> von <strong>${targetTrack.name}</strong> nach <strong>${altTrack.name}</strong>, um freie Kapazität zu schaffen.
+              </p>
+            </div>
+          </div>
+        `;
+        stepsContainer.insertAdjacentHTML('beforeend', evacStepHtml);
+      } else {
+        alertPanel.classList.add('hidden');
+      }
+
+      // Standard-Schritte des Transports
+      const steps = [
+        {
+          title: `Waggon übernehmen & Verband zusammenstellen`,
+          desc: `Hole Waggon <strong class="text-macan-accent">${targetWagon.name} (${targetWagon.code})</strong> vom aktuellen Standort <strong class="text-slate-200">${currentWagonTrack.name}</strong>.`
+        },
+        {
+          title: `Hauptfahrt & Beladung / Rangierung`,
+          desc: `Fahre den Zugverband nach <strong class="text-macan-accent">${targetTrack.name}</strong> und führe die Ladetätigkeit für <strong>${scenario.cargoName}</strong> durch.`
+        },
+        {
+          title: `Ziel-Sicherung & Entladung`,
+          desc: `Stelle den Waggon an <strong class="text-macan-accent">${targetTrack.name}</strong> ab, sichere die Handbremsen und melde Vollzug an ${scenario.character.name}.`
+        }
+      ];
+
+      steps.forEach((st) => {
+        const stepHtml = `
+          <div class="bg-macan-bg p-3 rounded border border-macan-border flex items-start gap-3 font-mono text-xs">
+            <span class="w-5 h-5 rounded-full bg-macan-border text-macan-accent border border-macan-accent/40 flex items-center justify-center font-bold text-[10px] shrink-0">
+              ${stepCounter++}
+            </span>
+            <div>
+              <div class="font-bold text-slate-200">${st.title}</div>
+              <div class="text-slate-400 text-[11px] mt-0.5">${st.desc}</div>
+            </div>
+          </div>
+        `;
+        stepsContainer.insertAdjacentHTML('beforeend', stepHtml);
+      });
+
+      renderLiveTrackList();
+    }
+
+    // RENDER LIVE TRACK OVERVIEW
+    function renderLiveTrackList() {
+      const container = document.getElementById('live-track-list');
+      container.innerHTML = '';
+
+      TRACKS.forEach(track => {
+        const wagons = getWagonsOnTrack(track.id);
+        const isFull = track.cap > 0 && wagons.length >= track.cap;
+        const isDisabled = track.cap === 0;
+
+        let statusBadge = `<span class="text-[10px] px-1.5 py-0.5 rounded bg-macan-border text-slate-400">${wagons.length}/${track.cap}</span>`;
+        if (isDisabled) {
+          statusBadge = `<span class="text-[10px] px-1.5 py-0.5 rounded bg-macan-alert/20 text-macan-alert font-bold">GESPERRT</span>`;
+        } else if (isFull) {
+          statusBadge = `<span class="text-[10px] px-1.5 py-0.5 rounded bg-macan-gold/20 text-macan-gold font-bold">VOLL (${wagons.length}/${track.cap})</span>`;
+        }
+
+        let wagonPills = wagons.map(w => `
+          <span class="px-1.5 py-0.5 rounded text-[10px] font-bold border border-black/30" style="background-color: ${w.color}; color: ${w.textColor}">
+            ${w.name}
+          </span>
+        `).join(' ');
+
+        if (wagons.length === 0) {
+          wagonPills = `<span class="text-slate-600 italic text-[11px]">[Keine Waggons]</span>`;
+        }
+
+        const itemHtml = `
+          <div class="bg-macan-bg p-2.5 rounded border ${isDisabled ? 'border-macan-alert/30 bg-macan-alert/5' : 'border-macan-border'} flex flex-col gap-1.5">
+            <div class="flex items-center justify-between">
+              <span class="font-bold ${isDisabled ? 'text-macan-alert' : 'text-slate-200'}">${track.name}</span>
+              ${statusBadge}
+            </div>
+            <div class="flex flex-wrap gap-1">
+              ${wagonPills}
+            </div>
+          </div>
+        `;
+        container.insertAdjacentHTML('beforeend', itemHtml);
+      });
+    }
+
+    // RENDER MODAL TRACK EDITOR (INTERAKTIVES DRAG & DROP + TAP)
+    function renderEditorModalTracks() {
+      const grid = document.getElementById('editor-tracks-grid');
+      grid.innerHTML = '';
+
+      TRACKS.forEach(track => {
+        const wagons = getWagonsOnTrack(track.id);
+        const isDisabled = track.cap === 0;
+        const isFull = track.cap > 0 && wagons.length >= track.cap;
+
+        let statusText = `${wagons.length} / ${track.cap} Waggons`;
+        let borderClass = "border-macan-border bg-macan-bg";
+        if (isDisabled) {
+          statusText = "0 / 0 (GESPERRT)";
+          borderClass = "border-macan-alert/40 bg-macan-alert/10";
+        } else if (isFull) {
+          borderClass = "border-macan-gold/50 bg-macan-gold/5";
+        }
+
+        let wagonCardsHtml = wagons.map(w => `
+          <div draggable="true" 
+               ondragstart="handleDragStart(event, '${w.id}')"
+               ondragend="handleDragEnd(event)"
+               onclick="handleWagonTap(event, '${w.id}')"
+               class="wagon-card cursor-grab active:cursor-grabbing p-2 rounded shadow border border-black/40 flex items-center justify-between select-none transition hover:scale-[1.02]"
+               style="background-color: ${w.color}; color: ${w.textColor}">
+            <div>
+              <div class="font-bold text-xs">${w.name}</div>
+              <div class="text-[10px] opacity-80">${w.code} &bull; ${w.type}</div>
+            </div>
+            <svg class="w-4 h-4 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16"></path></svg>
+          </div>
+        `).join('');
+
+        if (wagons.length === 0) {
+          wagonCardsHtml = `<div class="text-xs text-slate-500 italic p-3 text-center border border-dashed border-macan-border rounded">Gleis leer (Dropzone)</div>`;
+        }
+
+        const trackBoxHtml = `
+          <div class="track-dropzone border-2 ${borderClass} rounded-lg p-3 flex flex-col justify-between transition min-h-[160px]"
+               ondragover="handleDragOver(event, '${track.id}')"
+               ondragleave="handleDragLeave(event)"
+               ondrop="handleDrop(event, '${track.id}')"
+               onclick="handleTrackTap('${track.id}')">
+            <div>
+              <div class="flex items-center justify-between border-b border-macan-border/60 pb-1.5 mb-2">
+                <h4 class="font-mono text-xs font-bold ${isDisabled ? 'text-macan-alert' : 'text-macan-accent'}">${track.name}</h4>
+                <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-macan-card text-slate-300 font-bold">${statusText}</span>
+              </div>
+              <p class="text-[10px] text-slate-400 mb-2 font-mono">${track.desc}</p>
+              <div class="space-y-1.5">
+                ${wagonCardsHtml}
+              </div>
+            </div>
+          </div>
+        `;
+        grid.insertAdjacentHTML('beforeend', trackBoxHtml);
+      });
+    }
+
+    // DRAG & DROP LOGIK
+    let draggedWagonId = null;
+
+    function handleDragStart(e, wagonId) {
+      draggedWagonId = wagonId;
+      e.dataTransfer.setData('text/plain', wagonId);
+      e.currentTarget.classList.add('dragging');
+    }
+
+    function handleDragEnd(e) {
+      e.currentTarget.classList.remove('dragging');
+      draggedWagonId = null;
+    }
+
+    function handleDragOver(e, trackId) {
+      e.preventDefault();
+      const track = getTrack(trackId);
+      const targetZone = e.currentTarget;
+
+      if (!track || track.cap === 0) {
+        targetZone.classList.add('drag-blocked');
+        e.dataTransfer.dropEffect = 'none';
+        return;
+      }
+
+      const currentCount = getWagonsOnTrack(trackId).length;
+      const isSameTrack = state.wagonPositions[draggedWagonId] === trackId;
+
+      if (!isSameTrack && currentCount >= track.cap) {
+        targetZone.classList.add('drag-blocked');
+        e.dataTransfer.dropEffect = 'none';
+      } else {
+        targetZone.classList.add('drag-over');
+        e.dataTransfer.dropEffect = 'move';
+      }
+    }
+
+    function handleDragLeave(e) {
+      e.currentTarget.classList.remove('drag-over', 'drag-blocked');
+    }
+
+    function handleDrop(e, targetTrackId) {
+      e.preventDefault();
+      e.currentTarget.classList.remove('drag-over', 'drag-blocked');
+
+      const wagonId = e.dataTransfer.getData('text/plain') || draggedWagonId;
+      if (!wagonId) return;
+
+      moveWagonToTrack(wagonId, targetTrackId);
+    }
+
+    // MOBILE TAP SELECTION FALLBACK
+    function handleWagonTap(e, wagonId) {
+      e.stopPropagation();
+      state.tapSelectedWagonId = wagonId;
+      const w = getWagon(wagonId);
+      document.getElementById('tap-selected-info').classList.remove('hidden');
+      document.getElementById('tap-selected-text').innerText = `Waggon "${w.name}" gewählt. Tippe auf ein Zielgleis!`;
+    }
+
+    function handleTrackTap(targetTrackId) {
+      if (!state.tapSelectedWagonId) return;
+      moveWagonToTrack(state.tapSelectedWagonId, targetTrackId);
+      clearTapSelection();
+    }
+
+    function clearTapSelection() {
+      state.tapSelectedWagonId = null;
+      document.getElementById('tap-selected-info').classList.add('hidden');
+    }
+
+    // CORE WAGON MOVE VALIDATOR
+    function moveWagonToTrack(wagonId, targetTrackId) {
+      const track = getTrack(targetTrackId);
+      const wagon = getWagon(wagonId);
+
+      if (!track || !wagon) return;
+
+      if (track.cap === 0) {
+        showToast(`FEHLER: Gleis "${track.name}" ist GESPERRT!`, 'alert');
+        return;
+      }
+
+      const currentTrackId = state.wagonPositions[wagonId];
+      if (currentTrackId === targetTrackId) return;
+
+      const currentWagonsOnTarget = getWagonsOnTrack(targetTrackId);
+      if (currentWagonsOnTarget.length >= track.cap) {
+        showToast(`FEHLER: Gleis "${track.name}" ist VOLL (${track.cap}/${track.cap})!`, 'alert');
+        return;
+      }
+
+      // Successful move
+      state.wagonPositions[wagonId] = targetTrackId;
+      saveState();
+      renderEditorModalTracks();
+      renderActiveTask();
+      showToast(`Waggon "${wagon.name}" -> ${track.name}`, 'success');
+    }
+
+    function resetTracksToDefault() {
+      state.wagonPositions = { ...DEFAULT_WAGON_POSITIONS };
+      saveState();
+      renderEditorModalTracks();
+      renderActiveTask();
+      showToast('Standard-Gleisbelegung wiederhergestellt.', 'info');
+    }
+
+    // SZENARIO KATALOG RENDERER
+    function renderScenarioList() {
+      const container = document.getElementById('scenario-list-container');
+      container.innerHTML = '';
+
+      SCENARIOS.forEach(sc => {
+        const isActive = sc.id === state.activeScenarioId;
+        const wagon = getWagon(sc.wagonId);
+        const targetTrack = getTrack(sc.targetTrackId);
+
+        const cardHtml = `
+          <div onclick="selectScenario(${sc.id})" 
+               class="p-3.5 rounded-lg border transition cursor-pointer flex items-center justify-between ${isActive ? 'bg-macan-accent/15 border-macan-accent glow-accent' : 'bg-macan-bg border-macan-border hover:border-slate-500'}">
+            <div class="flex items-center gap-3">
+              <span class="font-bold text-xs px-2 py-1 rounded ${isActive ? 'bg-macan-accent text-black' : 'bg-macan-border text-slate-300'}">
+                ${sc.code}
+              </span>
+              <div>
+                <h4 class="font-bold text-sm text-slate-100">${sc.title}</h4>
+                <p class="text-xs text-slate-400 mt-0.5">${sc.character.name} &bull; ${sc.cargoName} &rarr; <span class="text-macan-accent">${targetTrack.name}</span></p>
+              </div>
+            </div>
+            <div class="text-right text-xs">
+              <span class="px-2 py-0.5 rounded text-[10px] font-bold border" style="background-color: ${wagon.color}; color: ${wagon.textColor}">
+                ${wagon.name}
+              </span>
+            </div>
+          </div>
+        `;
+        container.insertAdjacentHTML('beforeend', cardHtml);
+      });
+    }
+
+    function selectScenario(id) {
+      state.activeScenarioId = id;
+      saveState();
+      renderActiveTask();
+      closeScenarioModal();
+      showToast(`Auftrag #${SCENARIOS.find(s => s.id === id).code} aktiviert.`, 'info');
+    }
+
+    function generateRandomTask() {
+      let nextId;
+      do {
+        nextId = Math.floor(Math.random() * SCENARIOS.length) + 1;
+      } while (nextId === state.activeScenarioId && SCENARIOS.length > 1);
+
+      selectScenario(nextId);
+    }
+
+    // MODAL CONTROL
+    function openEditorModal() {
+      renderEditorModalTracks();
+      document.getElementById('editor-modal').classList.remove('hidden');
+    }
+
+    function closeEditorModal() {
+      clearTapSelection();
+      document.getElementById('editor-modal').classList.add('hidden');
+      renderActiveTask();
+    }
+
+    function openScenarioModal() {
+      renderScenarioList();
+      document.getElementById('scenario-modal').classList.remove('hidden');
+    }
+
+    function closeScenarioModal() {
+      document.getElementById('scenario-modal').classList.add('hidden');
+    }
+
+    // TOAST NOTIFICATION UTILITY
+    function showToast(msg, type = 'info') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      
+      let bgClass = "bg-macan-card border-macan-accent text-macan-accent";
+      if (type === 'alert') bgClass = "bg-macan-card border-macan-alert text-macan-alert";
+      if (type === 'success') bgClass = "bg-macan-card border-macan-green text-macan-green";
+
+      toast.className = `px-4 py-2.5 rounded-lg border shadow-xl text-xs font-mono transition-all transform translate-y-2 opacity-0 flex items-center gap-2 ${bgClass}`;
+      toast.innerText = msg;
+
+      container.appendChild(toast);
+
+      // Animate in
+      setTimeout(() => {
+        toast.classList.remove('translate-y-2', 'opacity-0');
+      }, 10);
+
+      // Animate out
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+
+    // INITIALIZATION
+    window.addEventListener('DOMContentLoaded', () => {
+      loadState();
+      renderActiveTask();
+    });
+  </script>
+</body>
+</html>
